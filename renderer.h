@@ -36,6 +36,7 @@ enum class Key{
     DOWN,
     RIGHT,
     LEFT,
+    SPACE,
     OTHER,
     NONE
 };
@@ -43,12 +44,17 @@ enum class Key{
 Key readKey(){
     char buf[3];
     int n = read(STDIN_FILENO, buf, 3);
+    if (buf[0] == ' '){
+        return Key::SPACE;
+    }
+    
     if (n<= 0) return Key::NONE;
     switch (buf[2]){
         case 'A': return Key::UP;
         case 'B': return Key::DOWN;
         case 'C': return Key::RIGHT;
         case 'D': return Key::LEFT;
+        case ' ': return Key::SPACE;
     }
     return Key::OTHER;
 }
@@ -100,7 +106,7 @@ struct Grid {
 };
 
 
-class Display {
+class Renderer {
     /*
     This class defines the environment variables such as pixel size, zoom etc.
     */
@@ -114,7 +120,7 @@ private:
     int m_offset_y {0};
 
 public:
-    Display(int width, int height)
+    Renderer(int width, int height)
     : m_width{width}
     , m_height{height}
     {

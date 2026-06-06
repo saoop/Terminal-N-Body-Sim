@@ -59,6 +59,8 @@ class Simulation {
 
     std::vector<CircleBody<T>> m_bodies;
 
+    bool m_paused{false};
+
     // For now a dumb solution.
     Vec2<T> computeAcceleration(int index){ // TODO use a reference instead
         Vec2<T> total_acc {0,0};
@@ -86,8 +88,16 @@ class Simulation {
     }
 
     public:
+
+    void togglePause(){
+        m_paused = !m_paused;
+    }
+
     void step(){
         // Later parallelize
+        if(m_paused){
+            return;
+        }
 
         std::vector<Vec2<T>> accelerations;
         for (std::size_t i {0}; i < m_bodies.size(); i++){
