@@ -28,7 +28,7 @@ class KeyEventHandler {
 int main() {
     RawMode raw_mode; // RAII for raw mode
     Simulation<double> sim {};
-    Renderer renderer {71, 31};
+    Renderer renderer {125, 35};
 
     KeyEventHandler keyEventHandler{};
 
@@ -38,17 +38,38 @@ int main() {
     keyEventHandler.addCommand(Key::LEFT, std::make_unique<MoveCommand> (renderer, -1, 0));
     keyEventHandler.addCommand(Key::SPACE, std::make_unique<PauseCommand<double>>(sim));
 
-    sim.addBody(
-        {
-            {0, 0}, {0, 0}, {100000}, 1
-        }
+    // Randomly initialize some bodies
+
+
+    // Create some bodies to the left
+    for (int i {0}; i < 5; i++){
+        sim.addBody(
+            {
+                {-10000 + 10 * (rand() % 101), (rand() % 101) * 20}, {0, 0}, {2000}, 1
+            } 
+        );
+    }
+
+    // create some bodies to the right
+    for (int i {0}; i < 5; i++){
+        sim.addBody(
+            {
+                {10000 + 10 * (rand() % 101), (rand() % 101) * 20}, {0, 0}, {2000}, 1
+            } 
+        );
+    }
+
+    // sim.addBody(
+    //     {
+    //         {0, 0}, {0, 0}, {100000}, 1
+    //     }
        
-    );
-    sim.addBody(
-         {
-            {7000, 0}, {0, 100}, {2000}, 1
-        }
-    );
+    // );
+    // sim.addBody(
+    //      {
+    //         {7000, 0}, {0, 100}, {2000}, 1
+    //     } 
+    // );
    
 
     renderer.start();

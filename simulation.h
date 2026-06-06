@@ -54,7 +54,7 @@ public:
 template <typename T>
 class Simulation {
     // static constexpr double G = 6.67430e-11; // m^3 kg^-1 s^-2
-    static constexpr double G = 1000; // m^3 kg^-1 s^-2, just for testing purposes.
+    static constexpr double G = 100; // m^3 kg^-1 s^-2, just for testing purposes.
     private:
 
     std::vector<CircleBody<T>> m_bodies;

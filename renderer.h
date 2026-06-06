@@ -172,10 +172,16 @@ public:
         std::cout << s;
     }
 
+    void drawBorder() const {
+        for (int i {0}; i < m_width + 1; i++){
+            std::cout << "-";
+        }
+        std::cout << "\n";
+    }
+
 
     void render(std::vector<CircleBody<double>>& bodies) const {
-        std::cout << "------------------------------------------------------------------\n";
-
+        drawBorder();
         // Grid of pixels.
         Grid grid {m_height, m_width};
 
@@ -210,10 +216,7 @@ public:
             std::cout << "\n";
 
         }
-        std::cout << "------------------------------------------------------------------\n";
-
-        // grid.clear();
-
+        drawBorder();
         clear();
     }
     
