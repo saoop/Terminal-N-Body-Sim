@@ -40,4 +40,22 @@ struct PauseCommand : Command {
         sim.togglePause();
     }
 };
+
+
+struct ZoomCommand : Command {
+    Renderer & renderer;
+    double factor;
+    ZoomCommand(Renderer & renderer, double factor)
+    : renderer{renderer}
+    , factor{factor}
+    {
+        
+    }
+
+    void execute() const override  {
+        renderer.zoom(factor);
+    }
+
+};
+
 #endif

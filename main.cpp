@@ -32,29 +32,42 @@ int main() {
 
     KeyEventHandler keyEventHandler{};
 
+    // Moving camera
     keyEventHandler.addCommand(Key::UP, std::make_unique<MoveCommand> (renderer, 0, -1));
     keyEventHandler.addCommand(Key::DOWN, std::make_unique<MoveCommand> (renderer, 0, 1));
     keyEventHandler.addCommand(Key::RIGHT, std::make_unique<MoveCommand> (renderer, 1, 0));
     keyEventHandler.addCommand(Key::LEFT, std::make_unique<MoveCommand> (renderer, -1, 0));
+
+    // Pause the simulation
     keyEventHandler.addCommand(Key::SPACE, std::make_unique<PauseCommand<double>>(sim));
+
+    //Zooming in and out
+    keyEventHandler.addCommand(Key::ZOOM_IN, std::make_unique<ZoomCommand> (renderer, 0.5));
+    keyEventHandler.addCommand(Key::ZOOM_OUT, std::make_unique<ZoomCommand> (renderer, 2));
+
 
     // Randomly initialize some bodies
 
-
     // Create some bodies to the left
-    for (int i {0}; i < 5; i++){
+    for (int i {0}; i < 22; i++){
         sim.addBody(
             {
-                {-10000 + 10 * (rand() % 101), (rand() % 101) * 20}, {0, 0}, {2000}, 1
+                {-10000 + 200 * (rand() % 101), (rand() % 101) * 100}, {0, 0}, {0,0}, {2000}, 300
             } 
         );
     }
 
+     sim.addBody(
+            {
+                {0 , 0}, {0, 0}, {0,0}, {100000}, 300
+            } 
+    );
+
     // create some bodies to the right
-    for (int i {0}; i < 5; i++){
+    for (int i {0}; i < 22; i++){
         sim.addBody(
             {
-                {10000 + 10 * (rand() % 101), (rand() % 101) * 20}, {0, 0}, {2000}, 1
+                {10000 + 200 * (rand() % 101), (rand() % 101) * 100}, {0, 0}, {0,0}, {2000}, 300
             } 
         );
     }

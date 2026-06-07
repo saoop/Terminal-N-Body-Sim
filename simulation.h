@@ -7,12 +7,14 @@ class Body {
 protected:
     Vec2<T> m_pos {};
     Vec2<T> m_vel {};
+    Vec2<T> m_acc {};
     T m_mass {};
 
 public:
-    Body (Vec2<T> pos, Vec2<T> vel, T mass) 
+    Body (Vec2<T> pos, Vec2<T> vel, Vec2<T> acc, T mass) 
     : m_pos{pos}
     , m_vel{vel}
+    , m_acc{acc}
     , m_mass{mass}
     {}
 
@@ -24,12 +26,22 @@ public:
         return m_mass;
     }
 
-    void updatePos(){
-        m_pos += m_vel;
+    void update(Vec2<T> const& new_acc, double dt=1){
+        updatePos(dt);
+        updateVel(new_acc, dt);
+        m_acc = new_acc;
     }
 
-    void updateVel(Vec2<T> const& acceleration){
-        m_vel += acceleration;
+    void updatePos(double dt=1){
+        m_pos += m_vel * dt + m_acc * 1/2 * dt * dt;
+    }
+
+    void setAcc(Vec2<T> acc){
+        m_acc = acc;
+    }
+
+    void updateVel(Vec2<T> const& new_acc, double dt=1){
+        m_vel += (new_acc + m_acc) * 1/2 * dt;
     }
 };
 
@@ -41,10 +53,14 @@ class CircleBody : public Body<T>
 private:
     T m_radius {};
 public:
-    CircleBody(Vec2<T> pos, Vec2<T> vel, T mass, T radius)
-    : Body<T> {pos, vel, mass}
+    CircleBody(Vec2<T> pos, Vec2<T> vel, Vec2<T> acc, T mass, T radius)
+    : Body<T>(pos, vel, acc, mass)
     , m_radius{radius} {
         std::cout << "Initialized Circle" << '\n';
+    }
+
+    T getRadius(){
+        return m_radius;
     }
 };
 
@@ -56,6 +72,8 @@ class Simulation {
     // static constexpr double G = 6.67430e-11; // m^3 kg^-1 s^-2
     static constexpr double G = 100; // m^3 kg^-1 s^-2, just for testing purposes.
     private:
+
+    double m_dt {1}; // time step, in seconds.
 
     std::vector<CircleBody<T>> m_bodies;
 
@@ -107,9 +125,9 @@ class Simulation {
         }
 
         for (int i {0}; i < m_bodies.size(); i++){
-            m_bodies[i].updatePos();
-
-            m_bodies[i].updateVel(accelerations[i]);
+            // xi+1 = xi + vi*dt + 1/2 ai*dt^2
+            // vi+1 = vi + 1/2(ai + ai+1)*dt
+            m_bodies[i].update(accelerations[i]);
         }   
     }
 

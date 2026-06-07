@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "math_utils.h"
 #include "simulation.h"
+#include <map>
 
 
 void enableRawMode(termios& original) {
@@ -37,6 +38,8 @@ enum class Key{
     RIGHT,
     LEFT,
     SPACE,
+    ZOOM_IN,
+    ZOOM_OUT,
     OTHER,
     NONE
 };
@@ -44,19 +47,36 @@ enum class Key{
 Key readKey(){
     char buf[3];
     int n = read(STDIN_FILENO, buf, 3);
-    if (buf[0] == ' '){
-        return Key::SPACE;
+
+    if (n<= 0) return Key::NONE;
+
+    // Check the first one in the buffer
+    switch (buf[0]){
+        case ' ': return Key::SPACE;
+        case '-': return Key::ZOOM_OUT;// Using just + and - here, because Ctrl is handled diffferently on different terminals.`
+        case '+': return Key::ZOOM_IN;
     }
     
-    if (n<= 0) return Key::NONE;
     switch (buf[2]){
         case 'A': return Key::UP;
         case 'B': return Key::DOWN;
         case 'C': return Key::RIGHT;
         case 'D': return Key::LEFT;
-        case ' ': return Key::SPACE;
     }
     return Key::OTHER;
+}
+
+// enum class 
+
+namespace Pixels{
+    inline const std::map<int, char> pixel_map {
+        {0, ' '},
+        {1, '.'},
+        {2, '*'},
+        {3, 'o'},
+        {4, '0'},
+        {5, '@'}
+    };
 }
 
 struct Grid {
@@ -64,13 +84,13 @@ struct Grid {
     int m_width {};
     int m_size {};
 
-    std::vector<bool> m_grid;
+    std::vector<int> m_grid;
 
     Grid(int height, int width)
         : m_height{height}
         , m_width{width}
         , m_size {m_height * m_width}
-        , m_grid(width * height, false)
+        , m_grid(width * height, 0)
     {
         
     }
@@ -85,22 +105,18 @@ struct Grid {
         }
     }
     
-    void set(int x, int y, bool val = true){
+    void set(int x, int y, int val = 1){
         if (!isValid(x, y)){
             return; // Silent, since it is just for rendering.
         }
         m_grid[y * m_width + x] = val;
     }
 
-    bool is_set(int x, int y) const {
-         if (!isValid(x, y)){
+    int operator()(int x, int y) const{
+        if (!isValid(x, y)){
             return false; // Silent, since it is just for rendering.
         }
         return m_grid[y * m_width + x];
-    }  
-
-    bool operator()(int x, int y) const{
-        return is_set(x, y);
     }
     
 };
@@ -141,17 +157,13 @@ public:
     }
 
     void setPixelSize(double new_size){
-        if (new_size >= 10){
-            m_pixel_size = new_size;
-        }
+        // if (new_size >= 10){
+        m_pixel_size = new_size;
+        // }
     }
 
-    void zoomIn() {
-        setPixelSize(m_pixel_size * 10);
-    }
-
-    void ZoomOut() {
-        setPixelSize(m_pixel_size / 10);
+    void zoom(double factor){
+        setPixelSize(m_pixel_size * factor);
     }
 
     void start(){
@@ -179,35 +191,78 @@ public:
         std::cout << "\n";
     }
 
-
     void render(std::vector<CircleBody<double>>& bodies) const {
         drawBorder();
+
         // Grid of pixels.
         Grid grid {m_height, m_width};
 
         // std::vector<bool> grid(m_width * m_height, false); //
         // Check in what pixle each body lies.
         for(auto& body : bodies){
+
+            //TODO: optimization: should skip all bodies that do not fit into the window.
+
+
             auto const& pos {body.getPos()};
             
             int ind_y {pos.y / m_pixel_size + m_center_y - m_offset_y}; // Convert them from 0 centered to grid coords.
             int ind_x {pos.x / m_pixel_size + m_center_x - m_offset_x};
+            
+        
 
-            grid.set(ind_x, ind_y);
+            // calculate the size of bodies
+            double size = body.getRadius() * 2;
+
+            if (size <= m_pixel_size){
+                int times = static_cast<int>(size / m_pixel_size);
+
+                times = std::min(times, 5);
+                times = std::max(times, 1);
+
+                grid.set(ind_x, ind_y, times);
+            } 
+            else {
+                int radius_in_pixels = static_cast<int>(size / m_pixel_size / 2);
+                grid.set(ind_x, ind_y, 5);
+                // Draw a circle
+
+                // IDK how to do it efficiently...
+                double r_squared = body.getRadius() * body.getRadius();
+
+                for (int i=0; i< radius_in_pixels * 2 + 1; i ++){
+                    for (int j = 0; j < radius_in_pixels * 2 + 1; j++){
+                        int x { i - radius_in_pixels };
+                        int y { j - radius_in_pixels};
+
+
+
+                        // std::cout << centered_x << " x: " << x << "\n";
+
+                        if (x * x + y * y <= radius_in_pixels * radius_in_pixels){
+                            grid.set(ind_x + x, ind_y + y, 5);
+                        }
+                    }
+                }
+
+                // for (int i {1};  i< radius_in_pixels; i ++){
+                //         grid.set(ind_x + i, ind_y+ i, 5);
+                //         grid.set(ind_x - i, ind_y+ i, 5);
+                //         grid.set(ind_x + i, ind_y- i, 5);
+                //         grid.set(ind_x - i, ind_y- i, 5);
+                // }
+
+            }
+
+
         }
         
 
         // Drawing the bodies
         for (int y{0}; y < m_height;y++){
             for (int x{0};x<m_width;x++){
-                // std::cout << grid(x, y);
+                std::cout << Pixels::pixel_map.at(grid(x,y));
 
-                if (grid(x, y)){
-                    std::cout << "*";
-                }
-                else {
-                    std::cout << " ";
-                }
 
                 if (x == m_width - 1){
                     std::cout << "|";
