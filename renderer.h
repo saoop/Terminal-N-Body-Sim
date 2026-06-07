@@ -209,13 +209,20 @@ public:
             int ind_y {pos.y / m_pixel_size + m_center_y - m_offset_y}; // Convert them from 0 centered to grid coords.
             int ind_x {pos.x / m_pixel_size + m_center_x - m_offset_x};
             
-        
+            double radius = body.getRadius();
 
-            // calculate the size of bodies
-            double size = body.getRadius() * 2;
+            double diameter = radius * 2;
 
-            if (size <= m_pixel_size){
-                int times = static_cast<int>(size / m_pixel_size);
+            int radius_in_pixels = static_cast<int>(radius / m_pixel_size);
+
+            //Check if some part of the body is visible
+            if(ind_x + radius_in_pixels < 0 || ind_x - radius_in_pixels >= m_width || ind_y + radius_in_pixels < 0 || ind_y - radius_in_pixels >= m_height){
+                continue;
+            }
+
+            
+            if (diameter <= m_pixel_size){
+                int times = static_cast<int>(diameter / m_pixel_size);
 
                 times = std::min(times, 5);
                 times = std::max(times, 1);
@@ -223,38 +230,26 @@ public:
                 grid.set(ind_x, ind_y, times);
             } 
             else {
-                int radius_in_pixels = static_cast<int>(size / m_pixel_size / 2);
                 grid.set(ind_x, ind_y, 5);
                 // Draw a circle
 
                 // IDK how to do it efficiently...
-                double r_squared = body.getRadius() * body.getRadius();
+                double r_squared = radius_in_pixels * radius_in_pixels;
 
                 for (int i=0; i< radius_in_pixels * 2 + 1; i ++){
                     for (int j = 0; j < radius_in_pixels * 2 + 1; j++){
                         int x { i - radius_in_pixels };
                         int y { j - radius_in_pixels};
 
+                        // Can use map 0.01, 0.04, 0.09 ... -> squares of usual 0.1, 0.2, 0.3, etc...
+                        // To render the intensity of the pixel (center -> stronger)
 
-
-                        // std::cout << centered_x << " x: " << x << "\n";
-
-                        if (x * x + y * y <= radius_in_pixels * radius_in_pixels){
+                        if (x * x + y * y <= r_squared){
                             grid.set(ind_x + x, ind_y + y, 5);
                         }
                     }
                 }
-
-                // for (int i {1};  i< radius_in_pixels; i ++){
-                //         grid.set(ind_x + i, ind_y+ i, 5);
-                //         grid.set(ind_x - i, ind_y+ i, 5);
-                //         grid.set(ind_x + i, ind_y- i, 5);
-                //         grid.set(ind_x - i, ind_y- i, 5);
-                // }
-
             }
-
-
         }
         
 
