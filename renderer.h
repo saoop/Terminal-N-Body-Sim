@@ -69,28 +69,44 @@ Key readKey(){
 // enum class 
 
 namespace Pixels{
-    inline const std::map<int, const char*> pixel_map {
+    inline const std::map<int, const char*>  one_body_in_pixel {
+        {1, "."},
+        {2, "▪"},
+        {3, "▣"},
+        {4, "■"},
+        {5, "∎"},
+        {6, "█"}
+    };
+
+    inline const std::map<int, const char*> several_bodies_in_pixel {
         {0, " "},
-        {1, "░"},
-        {2, "▒"},
-        {3, "▓"},
-        {4, "█"},
-        {5, "█"}
+        {1, "."},
+        {2, ":"},
+        {3, "⠪"},
+        {4, "⠭"},
+        {5, "⠷"},
+        {6, "⠿"},
+        {7, "▒"},
+        {8, "▓"},
+        {9, "█"},
     };
 }
+
+
 
 struct Grid {
     int m_height {};
     int m_width {};
     int m_size {};
 
-    std::vector<int> m_grid;
+    // first body, second intensity.
+    std::vector<std::pair<int,int>> m_grid;
 
     Grid(int height, int width)
         : m_height{height}
         , m_width{width}
         , m_size {m_height * m_width}
-        , m_grid(width * height, 0)
+        , m_grid(width * height, std::pair<int, int> (0, 0))
     {
         
     }
@@ -98,29 +114,52 @@ struct Grid {
     bool isValid(int x, int y) const {
         return y < m_height && x < m_width && y >= 0 && x >=0;
     }
-
-    void clear(){
-        for (size_t i{0}; i < m_size; i ++){
-            m_grid[i] = 0;
-        }
-    }
     
-    void set(int x, int y, int val = 1){
+    void addBody(int x, int y){
         if (!isValid(x, y)){
             return; // Silent, since it is just for rendering.
         }
-        if (m_grid[y * m_width + x] + val <= 5){
-            m_grid[y * m_width + x] += val;
-
-        }
+        m_grid[y * m_width + x].first = std::min (9, m_grid[y * m_width + x].first + 1);
     }
 
-    int operator()(int x, int y) const{
+    void addIntensity(int x, int y, int val){
         if (!isValid(x, y)){
-            return false; // Silent, since it is just for rendering.
+            return; // Silent, since it is just for rendering.
         }
-        return m_grid[y * m_width + x];
+
+        m_grid[y * m_width + x].second  = std::min (5, m_grid[y * m_width + x].second + val);
     }
+
+    // void set(int x, int y, int val = 1){
+    //     if (!isValid(x, y)){
+    //         return; // Silent, since it is just for rendering.
+    //     }
+    //     if (m_grid[y * m_width + x] + val <= 5){
+    //         m_grid[y * m_width + x] += val;
+
+    //     }
+    // }
+
+    int getNumBodies(int x, int y) const {
+        if (!isValid(x, y)){
+            return 0; // Silent, since it is just for rendering.
+        }
+        return m_grid[y * m_width + x].first;
+    }
+
+    int getIntensity(int x, int y) const {
+        if (!isValid(x, y)){
+            return 0; // Silent, since it is just for rendering.
+        }
+        return m_grid[y * m_width + x].second;
+    }
+
+    // std::par operator()(int x, int y) const{
+    //     if (!isValid(x, y)){
+    //         return false; // Silent, since it is just for rendering.
+    //     }
+    //     return m_grid[y * m_width + x];
+    // }
     
 };
 
@@ -160,9 +199,7 @@ public:
     }
 
     void setPixelSize(double new_size){
-        // if (new_size >= 10){
         m_pixel_size = new_size;
-        // }
     }
 
     void zoom(double factor){
@@ -218,20 +255,19 @@ public:
             if(ind_x + radius_in_pixels < 0 || ind_x - radius_in_pixels >= m_width || ind_y + radius_in_pixels < 0 || ind_y - radius_in_pixels >= m_height){
                 continue;
             }
-
+            
+            grid.addBody(ind_x, ind_y);
             
             if (diameter <= m_pixel_size){
                 int times = static_cast<int>(diameter / m_pixel_size);
 
-                times = std::min(times, 5);
+                times = std::min(times, 6);
                 times = std::max(times, 1);
 
-                // instea of setting it to a certain number -> better add to it-> if a lot of points are in one pixel -> a different char.
-                // No, wont do, since if 5 stars are '.' it will display this pixel as @ instead of something like ░
-                grid.set(ind_x, ind_y, times); 
+                grid.addIntensity(ind_x, ind_y, times); 
             } 
             else {
-                grid.set(ind_x, ind_y, 5);
+                grid.addIntensity(ind_x, ind_y, 6);
                 // Draw a circle
 
                 // IDK how to do it efficiently...
@@ -246,7 +282,7 @@ public:
                         // To render the intensity of the pixel (center -> stronger)
 
                         if (x * x + y * y <= r_squared){
-                            grid.set(ind_x + x, ind_y + y, 5);
+                            grid.addIntensity(ind_x + x, ind_y + y, 5);
                         }
                     }
                 }
@@ -257,13 +293,20 @@ public:
         // Drawing the bodies
         for (int y{0}; y < m_height;y++){
             for (int x{0};x<m_width;x++){
-                std::cout << Pixels::pixel_map.at(grid(x,y));
+                if (grid.getNumBodies(x, y) == 0){
+                    std::cout << " ";
 
+                }
+                else if (grid.getNumBodies(x, y) == 1){
+                    // std::cout << grid.getIntensity(x, y);
+                    std::cout << Pixels::one_body_in_pixel.at(grid.getIntensity(x, y));
+                }
+                else{
+                    std::cout << Pixels::several_bodies_in_pixel.at(grid.getNumBodies(x, y));
 
-                if (x == m_width - 1){
-                    std::cout << "|";
                 }
             }
+            std::cout << "|";
             std::cout << "\n";
 
         }
