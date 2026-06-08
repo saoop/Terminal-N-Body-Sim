@@ -49,40 +49,40 @@ int main() {
     // Randomly initialize some bodies
 
     // Create some bodies to the left
-    for (int i {0}; i < 22; i++){
-        sim.addBody(
-            {
-                {-10000 + 200 * (rand() % 101), (rand() % 101) * 100}, {0, 0}, {0,0}, {2000}, 300
-            } 
-        );
-    }
+    // for (int i {0}; i < 22; i++){
+    //     sim.addBody(
+    //         {
+    //             {-10000 + 200 * (rand() % 101), (rand() % 101) * 100}, {0, 0}, {0,0}, {2000}, 300
+    //         } 
+    //     );
+    // }
 
-     sim.addBody(
-            {
-                {0 , 0}, {0, 0}, {0,0}, {100000}, 300
-            } 
-    );
+    //  sim.addBody(
+    //         {
+    //             {0 , 0}, {0, 0}, {0,0}, {100000}, 300
+    //         } 
+    // );
 
-    // create some bodies to the right
-    for (int i {0}; i < 22; i++){
-        sim.addBody(
-            {
-                {10000 + 200 * (rand() % 101), (rand() % 101) * 100}, {0, 0}, {0,0}, {2000}, 300
-            } 
-        );
-    }
+    // // create some bodies to the right
+    // for (int i {0}; i < 22; i++){
+    //     sim.addBody(
+    //         {
+    //             {10000 + 200 * (rand() % 101), (rand() % 101) * 100}, {0, 0}, {0,0}, {2000}, 300
+    //         } 
+    //     );
+    // }
 
-    // sim.addBody(
-    //     {
-    //         {0, 0}, {0, 0}, {100000}, 1
-    //     }
+    sim.addBody(
+        {
+            {0, 0}, {0, 0}, {0,0},   {22000}, 300
+        }
        
-    // );
-    // sim.addBody(
-    //      {
-    //         {7000, 0}, {0, 100}, {2000}, 1
-    //     } 
-    // );
+    );
+    sim.addBody(
+         {
+            {7000, 0}, {0, 0}, {0,0} , {22000}, 300
+        } 
+    );
    
 
     renderer.start();

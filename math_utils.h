@@ -6,6 +6,7 @@ template <typename T=double>
 struct Vec2 {
     T x {}, y {};
 
+    Vec2() = default; // Default constructor, initializes to (0,0)
     Vec2 (T x, T y): x{x}, y{y} {} // Just copy the x and y.
 
     Vec2 operator+(Vec2 const& other) const{
@@ -28,6 +29,10 @@ struct Vec2 {
 
     Vec2 operator-(Vec2 const& other) const{
         return {x - other.x, y - other.y};
+    }
+
+    Vec2 operator-() const {
+        return {-x, -y};
     }
     
     Vec2& mul(T scalar){

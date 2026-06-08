@@ -69,13 +69,13 @@ Key readKey(){
 // enum class 
 
 namespace Pixels{
-    inline const std::map<int, char> pixel_map {
-        {0, ' '},
-        {1, '.'},
-        {2, '*'},
-        {3, 'o'},
-        {4, '0'},
-        {5, '@'}
+    inline const std::map<int, const char*> pixel_map {
+        {0, " "},
+        {1, "░"},
+        {2, "▒"},
+        {3, "▓"},
+        {4, "█"},
+        {5, "█"}
     };
 }
 
@@ -101,7 +101,7 @@ struct Grid {
 
     void clear(){
         for (size_t i{0}; i < m_size; i ++){
-            m_grid[i] = false;
+            m_grid[i] = 0;
         }
     }
     
@@ -109,7 +109,10 @@ struct Grid {
         if (!isValid(x, y)){
             return; // Silent, since it is just for rendering.
         }
-        m_grid[y * m_width + x] = val;
+        if (m_grid[y * m_width + x] + val <= 5){
+            m_grid[y * m_width + x] += val;
+
+        }
     }
 
     int operator()(int x, int y) const{
@@ -200,10 +203,6 @@ public:
         // std::vector<bool> grid(m_width * m_height, false); //
         // Check in what pixle each body lies.
         for(auto& body : bodies){
-
-            //TODO: optimization: should skip all bodies that do not fit into the window.
-
-
             auto const& pos {body.getPos()};
             
             int ind_y {pos.y / m_pixel_size + m_center_y - m_offset_y}; // Convert them from 0 centered to grid coords.
@@ -227,7 +226,9 @@ public:
                 times = std::min(times, 5);
                 times = std::max(times, 1);
 
-                grid.set(ind_x, ind_y, times);
+                // instea of setting it to a certain number -> better add to it-> if a lot of points are in one pixel -> a different char.
+                // No, wont do, since if 5 stars are '.' it will display this pixel as @ instead of something like ░
+                grid.set(ind_x, ind_y, times); 
             } 
             else {
                 grid.set(ind_x, ind_y, 5);

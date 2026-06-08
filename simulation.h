@@ -79,31 +79,31 @@ class Simulation {
 
     bool m_paused{false};
 
-    // For now a dumb solution.
-    Vec2<T> computeAcceleration(int index){ // TODO use a reference instead
-        Vec2<T> total_acc {0,0};
-
-        // Newton formula
-        for (std::size_t i{0}; i < m_bodies.size(); i++){
-            if (i == index){
-                continue;
-            }
-            
-            Vec2<T> diff  = m_bodies[i].getPos() - m_bodies[index].getPos();
-
-            T dist { diff.norm()};
-
-            dist= std::max(dist, 0.0001); // clip for very small values
-            //TODO: replace with the radius...
-
-            Vec2<T> direction {diff / dist}; 
-
-
-            Vec2<T> acc {direction * G * (m_bodies[i].getMass()) / (dist * dist)};
-            total_acc += acc;
-        }
-        return total_acc;
+    Vec2<T> computeGravity(T mass_1, T mass_2, Vec2<T> direction, T dist){
+        return direction * G * (mass_1 * mass_2) / (dist * dist);
     }
+
+    Vec2<T> computeForce(int i, int j){
+        /* Computes force between bodies i and j */
+        // Computes the force ON i
+        if (i == j){
+            return Vec2<T> {0,0};
+        }
+
+        Vec2<T> diff  =  m_bodies[j].getPos() - m_bodies[i].getPos(); // force that j exerts on i.
+
+        T dist { diff.norm()}; //TODO: still 0 division possible.
+
+        T total_radius = m_bodies[i].getRadius() + m_bodies[j].getRadius();
+
+        dist = std::max(dist, total_radius);
+
+        Vec2<T> direction {diff / dist}; 
+
+        Vec2<T> f {computeGravity(m_bodies[i].getMass(), m_bodies[j].getMass(), direction, dist)};
+        return f;
+
+    }   
 
     public:
 
@@ -117,11 +117,17 @@ class Simulation {
             return;
         }
 
-        std::vector<Vec2<T>> accelerations;
+        // Compute a force array.
+        // 
+
+        std::vector<Vec2<T>> accelerations (m_bodies.size());
         for (std::size_t i {0}; i < m_bodies.size(); i++){
-            // Vec2<T> n_acc = ;
-            // std::cout << "acceleration: " << n_acc.x << " " << n_acc.y << '\n';
-            accelerations.push_back(computeAcceleration(i)); 
+            for (std::size_t j {i + 1}; j < m_bodies.size(); j++){
+                Vec2<T> force = computeForce(i, j);
+                accelerations[i] += (force / m_bodies[i].getMass());
+                accelerations[j] += (-force / m_bodies[j].getMass());
+            }
+
         }
 
         for (int i {0}; i < m_bodies.size(); i++){
