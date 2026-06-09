@@ -3,8 +3,6 @@
 
 #include <map>
 
-enum class Key { UP, DOWN, RIGHT, LEFT, SPACE, ZOOM_IN, ZOOM_OUT, OTHER, NONE };
-
 namespace Pixels {
 inline const std::map<int, const char *> one_body_in_pixel{
     {0, " "}, {1, "."}, {2, "▪"}, {3, "▣"}, {4, "■"}, {5, "∎"}, {6, "█"}};
