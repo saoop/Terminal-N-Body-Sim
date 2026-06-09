@@ -1,7 +1,7 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include "renderer.h"
+#include "rendering/renderer.h"
 #include "simulation.h"
 
 struct Command {

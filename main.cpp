@@ -4,7 +4,7 @@
 
 #include "commands.h"
 #include "math_utils.h"
-#include "renderer.h"
+#include "rendering/renderer.h"
 #include "simulation.h"
 #include <bits/chrono.h>
 #include <memory>
@@ -118,7 +118,7 @@ int main() {
   // Randomly initialize some bodies
 
   // Create some bodies to the left
-  for (int i{0}; i < 42; i++) {
+  for (int i{0}; i < 62; i++) {
     sim.addBody({{-10000 + 200 * (rand() % 101), (rand() % 101) * 100},
                  {0, 0},
                  {0, 0},
@@ -126,10 +126,10 @@ int main() {
                  100});
   }
 
-  sim.addBody({{0, 0}, {0, 0}, {0, 0}, {100000}, 200});
+  sim.addBody({{0, 0}, {0, 0}, {0, 0}, {100000}, 300});
 
   // create some bodies to the right
-  for (int i{0}; i < 42; i++) {
+  for (int i{0}; i < 62; i++) {
     sim.addBody({{10000 + 200 * (rand() % 101), (rand() % 101) * 100},
                  {0, 0},
                  {0, 0},
@@ -157,8 +157,8 @@ int main() {
     renderer.render(sim.getBodies());
 
     // Moving the cursor of the renderers
-    renderer.clear();
     menu.clear();
+    renderer.clear();
 
     sim.step();
 
