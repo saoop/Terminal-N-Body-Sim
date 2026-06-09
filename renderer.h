@@ -63,7 +63,7 @@ Key readKey(){
         case 'C': return Key::RIGHT;
         case 'D': return Key::LEFT;
     }
-    return Key::OTHER;
+    return Key::OTHER; 
 }
 
 // enum class 
@@ -87,15 +87,30 @@ namespace Pixels{
         {4, "⠭"},
         {5, "⠷"},
         {6, "⠿"},
-        {7, "▒"},
-        {8, "▓"},
-        {9, "█"},
+        {7, "⡿"},
+        {8, "⣿"},
+        {9, "░"},
+        {10, "▒"},
+        {11, "▓"},
+        {12, "█"},
     };
+
+    inline static const int MAX_BODIES {9};
+    inline static const int MAX_INTENSITY {6};
 }
 
 
 
 struct Grid {
+    /*
+    Character Grid. This is a class between simulation and rendering, that makes rendering easier.
+    
+    Current version uses a pair of 2 ints in the grid: number of bodies that should be displayed in one character and intensity of the pixel.
+    If there are multiple bodies that fit into one character we can display them with something like ":" or "⠭".
+    If there is only one body in the character, we use intensity to make it appear smaller/larger,
+     depending on the relative size of body to the current pixel size.
+    
+    */
     int m_height {};
     int m_width {};
     int m_size {};
@@ -120,7 +135,7 @@ struct Grid {
         if (!isValid(x, y)){
             return; // Silent, since it is just for rendering.
         }
-        m_grid[y * m_width + x].first = std::min (9, m_grid[y * m_width + x].first + 1);
+        m_grid[y * m_width + x].first = std::min (Pixels::MAX_BODIES, m_grid[y * m_width + x].first + 1);
     }
 
     void addIntensity(int x, int y, int val){
@@ -128,18 +143,8 @@ struct Grid {
             return; // Silent, since it is just for rendering.
         }
 
-        m_grid[y * m_width + x].second  = std::min (6, m_grid[y * m_width + x].second + val);
+        m_grid[y * m_width + x].second  = std::min (Pixels::MAX_INTENSITY, m_grid[y * m_width + x].second + val);
     }
-
-    // void set(int x, int y, int val = 1){
-    //     if (!isValid(x, y)){
-    //         return; // Silent, since it is just for rendering.
-    //     }
-    //     if (m_grid[y * m_width + x] + val <= 5){
-    //         m_grid[y * m_width + x] += val;
-
-    //     }
-    // }
 
     int getNumBodies(int x, int y) const {
         if (!isValid(x, y)){
@@ -154,14 +159,6 @@ struct Grid {
         }
         return m_grid[y * m_width + x].second;
     }
-
-    // std::par operator()(int x, int y) const{
-    //     if (!isValid(x, y)){
-    //         return false; // Silent, since it is just for rendering.
-    //     }
-    //     return m_grid[y * m_width + x];
-    // }
-    
 };
 
 
@@ -262,13 +259,13 @@ public:
             if (diameter <= m_pixel_size){
                 int times = static_cast<int>(diameter / m_pixel_size);
 
-                times = std::min(times, 6);
+                times = std::min(times, Pixels::MAX_INTENSITY);
                 times = std::max(times, 1);
 
                 grid.addIntensity(ind_x, ind_y, times); 
             } 
             else {
-                grid.addIntensity(ind_x, ind_y, 6);
+                grid.addIntensity(ind_x, ind_y, Pixels::MAX_INTENSITY);
                 // Draw a circle
 
                 // IDK how to do it efficiently...
