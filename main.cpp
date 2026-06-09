@@ -28,11 +28,77 @@ class KeyEventHandler {
     }
 };
 
+class Timer{
+    private:
+        std::chrono::_V2::steady_clock::time_point m_start;
+        std::chrono::_V2::steady_clock::time_point m_end;
+
+    public:
+    std::chrono::_V2::steady_clock::time_point start(){
+        m_start = std::chrono::steady_clock::now();
+        return m_start;
+    }
+
+    std::chrono::_V2::steady_clock::time_point stop(){
+        m_end = std::chrono::steady_clock::now();
+        return m_end;
+    }
+
+    int elaspsed() const{
+        if (m_start > m_end){
+            return -1;
+        }
+        return std::chrono::duration_cast<std::chrono::microseconds>(m_end - m_start).count();
+    }
+};
+
+class FPSController {
+    private:
+    int m_max_fps {}; // in 1/Seconds
+    int m_minimal_wait {}; // In Microseconds
+    int m_max_frame_length {}; // In Microseconds
+    int m_current_fps {};
+    Timer m_timer {};
+    
+    public:
+    FPSController(int max_fps, int minimal_wait)
+    : m_max_fps{max_fps}
+    , m_minimal_wait{minimal_wait}
+    , m_max_frame_length {1000000 / max_fps}
+    {
+
+    }
+
+    int getCurrentFPS() const{
+        return m_current_fps;
+    }
+
+    void startFrame(){
+        m_timer.start();
+    }
+
+    void endFrame(){
+        m_timer.stop();
+
+        auto to_sleep {std::max(0, m_minimal_wait - m_timer.elaspsed())};
+
+        // Update the fps
+        m_current_fps = 1000000/ (to_sleep + m_timer.elaspsed()); // to Seconds conversion
+
+        //Sleep the rest of the frame
+        usleep(to_sleep);
+
+    }
+};
+
 int main() {
     RawMode raw_mode; // RAII for raw mode
     Simulation<double> sim {};
     Renderer renderer {125, 35};
     Menu menu{};
+    // Timer timer {};
+
+    FPSController fpsController {100, 10000};
 
     KeyEventHandler keyEventHandler{};
 
@@ -99,24 +165,16 @@ int main() {
 
     renderer.start();
     while(true){
-        // TODO: write a timer.
-        auto start = std::chrono::steady_clock::now();
-        menu.render(current_fps, sim.getBodies().size());
+        fpsController.startFrame();
+
+        menu.render(fpsController.getCurrentFPS(), sim.getBodies().size());
         renderer.render(sim.getBodies());
         menu.clear();
         
         sim.step();
 
-        auto stop = std::chrono::steady_clock::now();
-        int duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+        fpsController.endFrame();
         
-        auto to_sleep {std::max(0, minimal_wait - duration)};
-        current_fps = 1000000/ (to_sleep + duration); // to Seconds conversion
-
-        usleep(to_sleep);
-
-        // std::cout << "FPS: " << current_fps;
-
         keyEventHandler.handleKeyPress();
        
     }

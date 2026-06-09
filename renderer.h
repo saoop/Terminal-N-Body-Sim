@@ -222,15 +222,26 @@ public:
         std::cout << s;
     }
 
-    void drawBorder() const {
-        for (int i {0}; i < m_width + 1; i++){
-            std::cout << "-";
+    void drawTopBorder() const {
+        std::cout << "┏";
+        for (int i {1}; i < m_width + 1; i++){ // + 1 because of border
+            std::cout << "━";
         }
+        std::cout << "┓";
+        std::cout << "\n";
+    }
+
+    void drawBottomBorder() const {
+        std::cout << "┗";
+        for (int i {1}; i < m_width + 1; i++){
+            std::cout << "━";
+        }
+        std::cout << "┛";
         std::cout << "\n";
     }
 
     void render(std::vector<CircleBody<double>>& bodies) const {
-        drawBorder();
+        drawTopBorder();
 
         // Grid of pixels.
         Grid grid {m_height, m_width};
@@ -291,6 +302,8 @@ public:
 
         // Drawing the bodies
         for (int y{0}; y < m_height;y++){
+            std::cout << "┃";
+
             for (int x{0};x<m_width;x++){
                 if (grid.getNumBodies(x, y) == 0){
                     std::cout << Pixels::one_body_in_pixel.at(grid.getIntensity(x, y));
@@ -305,11 +318,11 @@ public:
 
                 }
             }
-            std::cout << "|";
+            std::cout << "┃";
             std::cout << "\n";
 
         }
-        drawBorder();
+        drawBottomBorder();
         clear();
     }
     
