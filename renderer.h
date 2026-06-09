@@ -316,4 +316,16 @@ public:
 
 };
 
+class Menu{
+    // private:
+    
+    public:
+    void clear(){
+        std::cout << "\033[A\r";
+    }
+    void render(int fps, int number_of_bodies){
+        std::cout << "FPS: " << fps << " | Number of bodies: " << number_of_bodies  << "\n";
+    }
+};
+
 #endif // DISPLAY_H
