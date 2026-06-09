@@ -70,6 +70,7 @@ Key readKey(){
 
 namespace Pixels{
     inline const std::map<int, const char*>  one_body_in_pixel {
+        {0, " "},
         {1, "."},
         {2, "▪"},
         {3, "▣"},
@@ -127,7 +128,7 @@ struct Grid {
             return; // Silent, since it is just for rendering.
         }
 
-        m_grid[y * m_width + x].second  = std::min (5, m_grid[y * m_width + x].second + val);
+        m_grid[y * m_width + x].second  = std::min (6, m_grid[y * m_width + x].second + val);
     }
 
     // void set(int x, int y, int val = 1){
@@ -282,7 +283,8 @@ public:
                         // To render the intensity of the pixel (center -> stronger)
 
                         if (x * x + y * y <= r_squared){
-                            grid.addIntensity(ind_x + x, ind_y + y, 5);
+                            // std::cout << "Setting circle intensity...";
+                            grid.addIntensity(ind_x + x, ind_y + y, 6);
                         }
                     }
                 }
@@ -294,7 +296,7 @@ public:
         for (int y{0}; y < m_height;y++){
             for (int x{0};x<m_width;x++){
                 if (grid.getNumBodies(x, y) == 0){
-                    std::cout << " ";
+                    std::cout << Pixels::one_body_in_pixel.at(grid.getIntensity(x, y));
 
                 }
                 else if (grid.getNumBodies(x, y) == 1){
