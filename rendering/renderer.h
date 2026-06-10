@@ -47,18 +47,18 @@ protected:
   }
   void drawTopBorder() const {
     moveCursor(0, 0);
-    std::cout << "┏";
+    std::cout << border_pixels.at(Border::UPPER_LEFT);
     for (int i = 0; i < m_width; i++)
-      std::cout << "━";
-    std::cout << "┓";
+      std::cout << border_pixels.at(Border::HORIZONTAL);
+    std::cout << border_pixels.at(Border::UPPER_RIGHT);
   }
 
   void drawBottomBorder() const {
     moveCursor(0, m_height + 1);
-    std::cout << "┗";
+    std::cout << border_pixels.at(Border::BOTTOM_LEFT);
     for (int i = 0; i < m_width; i++)
-      std::cout << "━";
-    std::cout << "┛";
+      std::cout << border_pixels.at(Border::HORIZONTAL);
+    std::cout << border_pixels.at(Border::BOTTOM_RIGHT);
   }
 
   void drawSideBorder() const {
