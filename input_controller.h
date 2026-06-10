@@ -26,8 +26,14 @@ void disableRawMode(termios &original) {
 
 struct RawMode {
   termios original;
-  RawMode() { enableRawMode(original); }
-  ~RawMode() { disableRawMode(original); }
+  RawMode() {
+    enableRawMode(original);
+    std::cout << "\033[?25l"; // hide cursor
+  }
+  ~RawMode() {
+    disableRawMode(original);
+    std::cout << "\033[?25h"; // show cursor
+  }
 };
 
 Key readKey() {

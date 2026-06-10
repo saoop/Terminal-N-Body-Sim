@@ -38,7 +38,7 @@ struct Grid {
       return; // Silent, since it is just for rendering.
     }
     m_grid[y * m_width + x].first =
-        std::min(Pixels::MAX_BODIES, m_grid[y * m_width + x].first + 1);
+        std::min(pixels::MAX_BODIES, m_grid[y * m_width + x].first + 1);
   }
 
   void addIntensity(int x, int y, int val) {
@@ -47,7 +47,7 @@ struct Grid {
     }
 
     m_grid[y * m_width + x].second =
-        std::min(Pixels::MAX_INTENSITY, m_grid[y * m_width + x].second + val);
+        std::min(pixels::MAX_INTENSITY, m_grid[y * m_width + x].second + val);
   }
 
   int getNumBodies(int x, int y) const {

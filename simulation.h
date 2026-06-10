@@ -1,5 +1,5 @@
-#ifndef SIMULATION_H
-#define SIMULATION_H
+#ifndef SIMULATION_M_H
+#define SIMULATION_M_H
 
 template <typename T = double> class Body {
 
@@ -41,9 +41,7 @@ private:
 
 public:
   CircleBody(Vec2<T> pos, Vec2<T> vel, Vec2<T> acc, T mass, T radius)
-      : Body<T>(pos, vel, acc, mass), m_radius{radius} {
-    std::cout << "Initialized Circle" << '\n';
-  }
+      : Body<T>(pos, vel, acc, mass), m_radius{radius} {}
 
   T getRadius() { return m_radius; }
 };

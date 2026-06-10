@@ -9,11 +9,20 @@
 #include "simulation.h"
 #include "utils.h"
 
+#include <sys/ioctl.h>
+
 int main() {
+  struct winsize w;
+
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
   RawMode raw_mode; // RAII for raw mode
   Simulation<double> sim{};
-  Renderer renderer{125, 35};
-  Menu menu{};
+  ResourcesWindow resourcesWindow{0, 0, w.ws_col - 2, 1};
+
+  Renderer renderer{0, 3, w.ws_col * 0.7 - 3, w.ws_row - 6};
+  SideInfo sideInfo{w.ws_col * 0.7 - 1, 3, w.ws_col * 0.3, w.ws_row - 6};
+
   // Timer timer {};
 
   FPSController fpsController{100, 10000};
@@ -74,17 +83,18 @@ int main() {
   //     }
   // );
 
-  renderer.start();
+  // std::cout << "SIZE: " << s.size() << "\n";
+  std::cout << "\033[2J"; // clear entire screen once
+  std::cout << "\033[H";  // move to top left once
+  std::cout << "\033[s";  // save this as our origin
   while (true) {
+
     fpsController.startFrame();
 
-    menu.render(fpsController.getCurrentFPS(), sim.getBodies().size());
+    resourcesWindow.render(fpsController.getCurrentFPS());
     renderer.render(sim.getBodies());
+    sideInfo.render(sim.getBodies().size(), 11);
 
-    // Moving the cursor of the renderers
-    menu.clear();
-
-    renderer.clear();
     sim.step();
 
     fpsController.endFrame();
