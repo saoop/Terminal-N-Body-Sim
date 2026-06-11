@@ -192,17 +192,20 @@ public:
     // Draw rows
     for (int y = 0; y < m_height; y++) {
       moveCursor(1, 1 + y); // +1 for top border
+      std::string buff;
+      buff.reserve(m_width);
+
       for (int x = 0; x < m_width; x++) {
         int num_bodies = grid.getNumBodies(x, y);
         if (num_bodies <= 1) {
-          std::cout << one_body_in_pixel.at(grid.getIntensity(x, y));
+          buff += one_body_in_pixel.at(grid.getIntensity(x, y));
         } else {
-          int clamped = std::min(num_bodies, MAX_BODIES);
-          std::cout << several_bodies_in_pixel.at(clamped);
+          buff += several_bodies_in_pixel.at(num_bodies);
         }
       }
+      std::cout << buff;
+      stopRendering();
     }
-    stopRendering();
   }
 };
 

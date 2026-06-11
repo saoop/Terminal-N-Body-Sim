@@ -117,6 +117,7 @@ public:
     }
 
     std::vector<Vec2<T>> accelerations(m_bodies.size());
+
     for (std::size_t i{0}; i < m_bodies.size(); i++) {
       Vec2<T> sum{};
 #pragma omp parallel for reduction(vec2_plus : sum)

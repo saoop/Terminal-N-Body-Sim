@@ -35,8 +35,8 @@ private:
   int m_minimal_wait{};     // In Microseconds
   int m_max_frame_length{}; // In Microseconds
   int m_current_fps{};
-  std::deque<double> m_last_fps; // last 30
-  static int const FPS_WINDOW_SIZE = 30;
+  std::deque<double> m_last_fps; // last 40
+  static int const FPS_WINDOW_SIZE = 40;
   Timer m_timer{};
 
 public:
