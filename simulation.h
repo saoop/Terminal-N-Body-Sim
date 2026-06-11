@@ -1,6 +1,7 @@
 #ifndef SIMULATION_M_H
 #define SIMULATION_M_H
-#include <omp.h> // Include OpenMP header
+#include <omp.h>
+#include <stdexcept>
 template <typename T = double> class Body {
 
 protected:
@@ -18,6 +19,8 @@ public:
   T const &getMass() const { return m_mass; }
 
   void update(Vec2<T> const &new_acc, double dt = 1) {
+    // xi+1 = xi + vi*dt + 1/2 ai*dt^2
+    // vi+1 = vi + 1/2(ai + ai+1)*dt
     updatePos(dt);
     updateVel(new_acc, dt);
     m_acc = new_acc;
@@ -50,6 +53,7 @@ public:
 template <typename T> class Simulation {
   // static constexpr double G = 6.67430e-11; // m^3 kg^-1 s^-2
   static constexpr double G = 100; // m^3 kg^-1 s^-2, just for testing purposes.
+
 private:
   double m_dt{1}; // time step, in seconds.
 
@@ -85,6 +89,14 @@ private:
   }
 
 public:
+  Simulation(double dt = 1) {
+    if (dt < 0) {
+      throw std::runtime_error("dt cannot be less than 0!");
+    }
+
+    m_dt = dt;
+  }
+
   void togglePause() { m_paused = !m_paused; }
 
   void step() {
@@ -104,24 +116,26 @@ public:
       }
     }
 
-    // Apply the accelerations.
     std::vector<Vec2<T>> accelerations(m_bodies.size());
     for (std::size_t i{0}; i < m_bodies.size(); i++) {
-      for (std::size_t j = i + 1; j < m_bodies.size(); j++) {
-
-        {
-          accelerations[i] +=
-              (forces.at(i * m_bodies.size() + j) / m_bodies[i].getMass());
-          accelerations[j] +=
-              (-forces.at(i * m_bodies.size() + j) / m_bodies[j].getMass());
-        }
+      Vec2<T> sum{};
+#pragma omp parallel for reduction(vec2_plus : sum)
+      for (std::size_t j = i + 1; j < m_bodies.size(); j++)
+      // Compute accelerations
+      // TODO: how to isolate?
+      {
+        sum += (forces.at(i * m_bodies.size() + j) / m_bodies[i].getMass());
+        accelerations[j] +=
+            (-forces.at(i * m_bodies.size() + j) / m_bodies[j].getMass());
       }
+
+      accelerations[i] += sum;
     }
 
-    // #pragma omp parallel
+    // Apply the accelerations.
+
+#pragma omp parallel for
     for (int i = 0; i < m_bodies.size(); i++) {
-      // xi+1 = xi + vi*dt + 1/2 ai*dt^2
-      // vi+1 = vi + 1/2(ai + ai+1)*dt
       m_bodies[i].update(accelerations[i]);
     }
   }

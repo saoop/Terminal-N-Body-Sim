@@ -1,7 +1,7 @@
 #ifndef MATH_UTILS_H
 #define MATH_UTILS_H
-
 #include <cmath>
+#include <omp.h>
 template <typename T = double> struct Vec2 {
   T x{}, y{};
 
@@ -36,5 +36,9 @@ template <typename T = double> struct Vec2 {
 
   T norm() const { return static_cast<T>(std::sqrt(x * x + y * y)); }
 };
+
+// This is used when summing over vectors.
+#pragma omp declare reduction(vec2_plus : Vec2<double> : omp_out += omp_in)    \
+    initializer(omp_priv = Vec2<double>{})
 
 #endif // MATH_UTILS_H
