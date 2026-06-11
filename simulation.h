@@ -93,16 +93,28 @@ public:
       return;
     }
 
-    // Compute a force array.
-    //
-
-    std::vector<Vec2<T>> accelerations(m_bodies.size());
-    for (std::size_t i{0}; i < m_bodies.size(); i++) {
+    // Compute the force array.
+    std::vector<Vec2<T>> forces(m_bodies.size() * m_bodies.size());
+#pragma omp parallel for
+    for (std::size_t i = 0; i < m_bodies.size(); i++) {
 #pragma omp parallel for
       for (std::size_t j = i + 1; j < m_bodies.size(); j++) {
         Vec2<T> force = computeForce(i, j);
-        accelerations[i] += (force / m_bodies[i].getMass());
-        accelerations[j] += (-force / m_bodies[j].getMass());
+        forces.at(i * m_bodies.size() + j) = force;
+      }
+    }
+
+    // Apply the accelerations.
+    std::vector<Vec2<T>> accelerations(m_bodies.size());
+    for (std::size_t i{0}; i < m_bodies.size(); i++) {
+      for (std::size_t j = i + 1; j < m_bodies.size(); j++) {
+
+        {
+          accelerations[i] +=
+              (forces.at(i * m_bodies.size() + j) / m_bodies[i].getMass());
+          accelerations[j] +=
+              (-forces.at(i * m_bodies.size() + j) / m_bodies[j].getMass());
+        }
       }
     }
 
