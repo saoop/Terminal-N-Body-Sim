@@ -1,6 +1,6 @@
 #ifndef SIMULATION_M_H
 #define SIMULATION_M_H
-
+#include <omp.h> // Include OpenMP header
 template <typename T = double> class Body {
 
 protected:
@@ -98,14 +98,16 @@ public:
 
     std::vector<Vec2<T>> accelerations(m_bodies.size());
     for (std::size_t i{0}; i < m_bodies.size(); i++) {
-      for (std::size_t j{i + 1}; j < m_bodies.size(); j++) {
+#pragma omp parallel for
+      for (std::size_t j = i + 1; j < m_bodies.size(); j++) {
         Vec2<T> force = computeForce(i, j);
         accelerations[i] += (force / m_bodies[i].getMass());
         accelerations[j] += (-force / m_bodies[j].getMass());
       }
     }
 
-    for (int i{0}; i < m_bodies.size(); i++) {
+    // #pragma omp parallel
+    for (int i = 0; i < m_bodies.size(); i++) {
       // xi+1 = xi + vi*dt + 1/2 ai*dt^2
       // vi+1 = vi + 1/2(ai + ai+1)*dt
       m_bodies[i].update(accelerations[i]);

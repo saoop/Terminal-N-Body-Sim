@@ -74,9 +74,6 @@ protected:
     drawTopBorder();
     drawBottomBorder();
     drawSideBorder();
-
-    // moveCursor(0, 0); // not y and x but 0 -> virtualize every
-    // window to have the origin at its corner.
   }
 
 public:
@@ -146,9 +143,7 @@ public:
   void zoom(double factor) { setPixelSize(m_pixel_size * factor); }
 
   void render(std::vector<CircleBody<double>> &bodies) const {
-    // Top border
     startRendering();
-    // drawTopBorder(m_pos_y);
 
     drawFullBorder();
     moveCursor(m_pos_x, m_pos_y);
@@ -197,9 +192,7 @@ public:
     // Draw rows
     for (int y = 0; y < m_height; y++) {
       moveCursor(1, 1 + y); // +1 for top border
-                            //   std::cout << "┃";
-
-      for (int x = 0; x < m_width - 1; x++) {
+      for (int x = 0; x < m_width; x++) {
         int num_bodies = grid.getNumBodies(x, y);
         if (num_bodies <= 1) {
           std::cout << one_body_in_pixel.at(grid.getIntensity(x, y));
@@ -208,11 +201,7 @@ public:
           std::cout << several_bodies_in_pixel.at(clamped);
         }
       }
-      //   std::cout << "┃";
     }
-
-    // Bottom border
-    // drawBottomBorder(m_pos_y + 1 + m_height);
     stopRendering();
   }
 };

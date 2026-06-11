@@ -52,7 +52,7 @@ int main() {
   // Randomly initialize some bodies
 
   // Create some bodies to the left
-  for (int i{0}; i < 62; i++) {
+  for (int i{0}; i < 300; i++) {
     sim.addBody({{-10000 + 200 * (rand() % 101), (rand() % 101) * 100},
                  {0, 0},
                  {0, 0},
@@ -63,7 +63,7 @@ int main() {
   sim.addBody({{0, 0}, {0, 0}, {0, 0}, {100000}, 300});
 
   // create some bodies to the right
-  for (int i{0}; i < 62; i++) {
+  for (int i{0}; i < 300; i++) {
     sim.addBody({{10000 + 200 * (rand() % 101), (rand() % 101) * 100},
                  {0, 0},
                  {0, 0},
