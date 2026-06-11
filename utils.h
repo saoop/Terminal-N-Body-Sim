@@ -1,4 +1,5 @@
 #include <bits/chrono.h>
+#include <deque>
 #include <memory>
 #include <unistd.h>
 
@@ -34,6 +35,8 @@ private:
   int m_minimal_wait{};     // In Microseconds
   int m_max_frame_length{}; // In Microseconds
   int m_current_fps{};
+  std::deque<double> m_last_fps; // last 30
+  static int const FPS_WINDOW_SIZE = 30;
   Timer m_timer{};
 
 public:
@@ -45,14 +48,32 @@ public:
 
   void startFrame() { m_timer.start(); }
 
+  void updateCurrentFPS(double new_fps) {
+    // Uses moving average to reduce the "flickering" of the FPS indicator.
+    m_last_fps.push_back(new_fps);
+    if (m_last_fps.size() > FPS_WINDOW_SIZE) {
+      m_last_fps.pop_front();
+    }
+
+    double avg{0};
+    for (auto fps : m_last_fps)
+      avg += fps;
+
+    avg /= FPS_WINDOW_SIZE;
+
+    m_current_fps = static_cast<int>(avg);
+  }
+
   void endFrame() {
     m_timer.stop();
 
     auto to_sleep{std::max(0, m_minimal_wait - m_timer.elaspsed())};
 
-    // Update the fps
-    m_current_fps =
+    // Update the fps estimate
+    double new_fps =
         1000000 / (to_sleep + m_timer.elaspsed()); // to Seconds conversion
+
+    updateCurrentFPS(new_fps);
 
     // Sleep the rest of the frame
     usleep(to_sleep);
