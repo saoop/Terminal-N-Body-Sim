@@ -51,8 +51,9 @@ public:
 
 // Simulation
 template <typename T> class Simulation {
-  // static constexpr double G = 6.67430e-11; // m^3 kg^-1 s^-2
-  static constexpr double G = 100; // m^3 kg^-1 s^-2, just for testing purposes.
+  static constexpr double G = 6.67430e-11; // m^3 kg^-1 s^-2
+  // static constexpr double G = 100; // m^3 kg^-1 s^-2, just for testing
+  // purposes.
 
 private:
   double m_dt{1}; // time step, in seconds.
@@ -137,7 +138,7 @@ public:
 
 #pragma omp parallel for
     for (int i = 0; i < m_bodies.size(); i++) {
-      m_bodies[i].update(accelerations[i]);
+      m_bodies[i].update(accelerations[i], m_dt);
     }
   }
 

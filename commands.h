@@ -1,7 +1,7 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include "rendering/renderer.h"
+#include "rendering/windows.h"
 #include "simulation.h"
 
 struct Command {
@@ -10,10 +10,10 @@ struct Command {
 
 struct MoveCommand : Command {
   // CommandName name {CommandName::MOVE};
-  Renderer &renderer;
+  SimulationWindow &renderer;
   int x{};
   int y{};
-  MoveCommand(Renderer &renderer, int x, int y)
+  MoveCommand(SimulationWindow &renderer, int x, int y)
       : renderer{renderer}, x{x}, y{y} {}
 
   void execute() const override { renderer.nudge(x, y); }
@@ -29,9 +29,9 @@ template <typename T> struct PauseCommand : Command {
 };
 
 struct ZoomCommand : Command {
-  Renderer &renderer;
+  SimulationWindow &renderer;
   double factor;
-  ZoomCommand(Renderer &renderer, double factor)
+  ZoomCommand(SimulationWindow &renderer, double factor)
       : renderer{renderer}, factor{factor} {}
 
   void execute() const override { renderer.zoom(factor); }

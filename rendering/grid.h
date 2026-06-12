@@ -2,6 +2,7 @@
 #define GRID_H
 
 #include "consts.h"
+#include <algorithm>
 #include <unistd.h>
 #include <vector>
 
@@ -33,6 +34,12 @@ struct Grid {
     return y < m_height && x < m_width && y >= 0 && x >= 0;
   }
 
+  bool isInBounds(int x, int y, int radius) const {
+    // Checks if at least some part of the body can be displayed
+    return !(x + radius < 0 || x - radius >= m_width || y + radius < 0 ||
+             y - radius >= m_height);
+  }
+
   void addBody(int x, int y) {
     if (!isValid(x, y)) {
       return; // Silent, since it is just for rendering.
@@ -45,6 +52,9 @@ struct Grid {
     if (!isValid(x, y)) {
       return; // Silent, since it is just for rendering.
     }
+
+    // clamp the value
+    val = std::clamp(val, 1, pixels::MAX_INTENSITY);
 
     m_grid[y * m_width + x].second =
         std::min(pixels::MAX_INTENSITY, m_grid[y * m_width + x].second + val);
@@ -62,6 +72,20 @@ struct Grid {
       return 0; // Silent, since it is just for rendering.
     }
     return m_grid[y * m_width + x].second;
+  }
+
+  void drawCircle(int x, int y, int radius) {
+    addIntensity(x, y, pixels::MAX_INTENSITY);
+
+    double r_squared = radius * radius;
+    for (int i = 0; i < radius * 2 + 1; i++) {
+      for (int j = 0; j < radius * 2 + 1; j++) {
+        int x_offset{i - radius};
+        int y_offset{j - radius};
+        if (x_offset * x_offset + y_offset * y_offset <= r_squared)
+          addIntensity(x_offset + x, y_offset + y, pixels::MAX_INTENSITY);
+      }
+    }
   }
 };
 

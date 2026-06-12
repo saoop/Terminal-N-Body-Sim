@@ -96,9 +96,9 @@ public:
   }
 };
 
-class SideInfo : public Window {
+class MetricsWindow : public Window {
 public:
-  SideInfo(int pos_x, int pos_y, int width, int height)
+  MetricsWindow(int pos_x, int pos_y, int width, int height)
       : Window{pos_x, pos_y, width, height} {}
 
   void render(size_t num_bodies, double total_energy) const {
@@ -118,16 +118,16 @@ public:
   }
 };
 
-class Renderer : public Window {
+class SimulationWindow : public Window {
 private:
   int m_center_x{};
   int m_center_y{};
-  double m_pixel_size{1000};
+  double m_pixel_size{1.496e11 / 5}; // 1 AU in meters};
   int m_offset_x{0};
   int m_offset_y{0};
 
 public:
-  Renderer(int pos_x, int pos_y, int width, int height)
+  SimulationWindow(int pos_x, int pos_y, int width, int height)
       : Window{pos_x, pos_y, width, height} {
     m_center_x = m_width / 2;
     m_center_y = m_height / 2;
@@ -163,33 +163,20 @@ public:
       int radius_in_pixels = static_cast<int>(radius / m_pixel_size);
 
       // Visibility check
-      if (ind_x + radius_in_pixels < 0 || ind_x - radius_in_pixels >= m_width ||
-          ind_y + radius_in_pixels < 0 || ind_y - radius_in_pixels >= m_height)
+      if (!grid.isInBounds(ind_x, ind_y, radius_in_pixels))
         continue;
 
       grid.addBody(ind_x, ind_y);
 
       if (diameter <= m_pixel_size) {
         int times = static_cast<int>(diameter / m_pixel_size);
-        times = std::min(times, MAX_INTENSITY);
-        times = std::max(times, 1);
         grid.addIntensity(ind_x, ind_y, times);
       } else {
-        grid.addIntensity(ind_x, ind_y, MAX_INTENSITY);
-
-        double r_squared = radius_in_pixels * radius_in_pixels;
-        for (int i = 0; i < radius_in_pixels * 2 + 1; i++) {
-          for (int j = 0; j < radius_in_pixels * 2 + 1; j++) {
-            int x{i - radius_in_pixels};
-            int y{j - radius_in_pixels};
-            if (x * x + y * y <= r_squared)
-              grid.addIntensity(ind_x + x, ind_y + y, MAX_INTENSITY);
-          }
-        }
+        grid.drawCircle(ind_x, ind_y, radius_in_pixels);
       }
     }
 
-    // Draw rows
+    // Draw the grid
     for (int y = 0; y < m_height; y++) {
       moveCursor(1, 1 + y); // +1 for top border
       std::string buff;
