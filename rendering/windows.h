@@ -127,10 +127,12 @@ private:
   int m_offset_y{0};
 
 public:
-  SimulationWindow(int pos_x, int pos_y, int width, int height)
+  SimulationWindow(int pos_x, int pos_y, int width, int height,
+                   double pixel_size = 1000)
       : Window{pos_x, pos_y, width, height} {
     m_center_x = m_width / 2;
     m_center_y = m_height / 2;
+    m_pixel_size = pixel_size;
   }
 
   void nudge(int offset_x, int offset_y) {

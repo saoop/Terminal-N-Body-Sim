@@ -8,6 +8,7 @@
 #include "rendering/windows.h"
 #include "simulation.h"
 #include "utils.h"
+#include <memory>
 
 #include <sys/ioctl.h>
 
@@ -28,7 +29,10 @@ int main() {
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
   RawMode raw_mode; // RAII for raw mode
-  Simulation<double> sim{2629743 / 1000};
+  // Simulation<double> sim{2629743 / 1000};
+  // BruteForceForcesComputer<double> forceComputer{100};
+  Simulation<double> sim{
+      std::make_unique<BruteForceForcesComputer<double>>(100), 1};
   ResourcesWindow resourcesWindow{0, 0, w.ws_col - 2, 1};
 
   SimulationWindow renderer{0, 3, w.ws_col * 0.7 - 3, w.ws_row - 6};
@@ -63,42 +67,42 @@ int main() {
   // Randomly initialize some bodies
 
   // Create some bodies to the left
-  // for (int i{0}; i < 300; i++) {
-  //   sim.addBody({{-10000 + 200 * (rand() % 101), (rand() % 101) * 100},
-  //                {0, 0},
-  //                {0, 0},
-  //                {2000},
-  //                100});
-  // }
+  for (int i{0}; i < 300; i++) {
+    sim.addBody({{-10000 + 200 * (rand() % 101), (rand() % 101) * 100},
+                 {0, 0},
+                 {0, 0},
+                 {2000},
+                 100});
+  }
 
-  // sim.addBody({{0, 0}, {0, 0}, {0, 0}, {100000}, 300});
+  sim.addBody({{0, 0}, {0, 0}, {0, 0}, {100000}, 300});
 
-  // // create some bodies to the right
-  // for (int i{0}; i < 300; i++) {
-  //   sim.addBody({{10000 + 200 * (rand() % 101), (rand() % 101) * 100},
-  //                {0, 0},
-  //                {0, 0},
-  //                {2000},
-  //                100});
-  // }
+  // create some bodies to the right
+  for (int i{0}; i < 300; i++) {
+    sim.addBody({{10000 + 200 * (rand() % 101), (rand() % 101) * 100},
+                 {0, 0},
+                 {0, 0},
+                 {2000},
+                 100});
+  }
 
-  sim.addBody({{0, 0}, {0, 0}, {0, 0}, SUN_MASS, EARTH_SUN_DIST / 10});
-  sim.addBody({{EARTH_SUN_DIST, 0},
-               {0, EARTH_ORBITAL_VEL},
-               {0, 0},
-               EARTH_MASS,
-               EARTH_SUN_DIST / 100}); // just for showcase
-  sim.addBody({{JUPITER_SUN_DIST, 0},
-               {0, JUPITER_ORBITAL_VEL},
-               {0, 0},
-               JUPITER_MASS,
-               JUPITER_SUN_DIST / 100});
+  // sim.addBody({{0, 0}, {0, 0}, {0, 0}, SUN_MASS, EARTH_SUN_DIST / 10});
+  // sim.addBody({{EARTH_SUN_DIST, 0},
+  //              {0, EARTH_ORBITAL_VEL},
+  //              {0, 0},
+  //              EARTH_MASS,
+  //              EARTH_SUN_DIST / 100}); // just for showcase
+  // sim.addBody({{JUPITER_SUN_DIST, 0},
+  //              {0, JUPITER_ORBITAL_VEL},
+  //              {0, 0},
+  //              JUPITER_MASS,
+  //              JUPITER_SUN_DIST / 100});
 
-  sim.addBody({{EARTH_SUN_DIST, MOON_EARTH_DIST},
-               {MOON_ORBITAL_VEL, EARTH_ORBITAL_VEL},
-               {0, 0},
-               MOON_MASS,
-               EARTH_SUN_DIST / 200});
+  // sim.addBody({{EARTH_SUN_DIST, MOON_EARTH_DIST},
+  //              {MOON_ORBITAL_VEL, EARTH_ORBITAL_VEL},
+  //              {0, 0},
+  //              MOON_MASS,
+  //              EARTH_SUN_DIST / 200});
 
   // sim.addBody({{E}})
 
