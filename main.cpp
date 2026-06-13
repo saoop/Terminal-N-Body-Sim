@@ -34,7 +34,7 @@ int main() {
   // Simulation<double> sim{2629743 / 1000};
   // BruteForceForcesComputer<double> forceComputer{100};
   Simulation<double> sim{
-      std::make_unique<BruteForceForcesComputer<double>>(100), 1};
+      std::make_unique<BarnesHutsForcesComputer<double>>(100), 1};
   ResourcesWindow resourcesWindow{0, 0, w.ws_col - 2, 1};
 
   SimulationWindow renderer{0, 3, w.ws_col * 0.7 - 3, w.ws_row - 6};
@@ -70,7 +70,7 @@ int main() {
 
   // Create some bodies to the left
   for (int i{0}; i < 300; i++) {
-    sim.addBody({{-10000 + 200 * (rand() % 101), (rand() % 101) * 100},
+    sim.addBody({{-10000 + 2000 * (rand() % 101), (rand() % 101) * 100},
                  {0, 0},
                  {0, 0},
                  {2000},

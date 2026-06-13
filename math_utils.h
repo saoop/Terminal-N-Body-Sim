@@ -10,6 +10,8 @@ template <typename T = double> struct Vec2 {
 
   Vec2 operator+(Vec2 const &other) const { return {x + other.x, y + other.y}; }
 
+  Vec2 operator+(T val) const { return {x + val, y + val}; }
+
   Vec2 &add(Vec2 const &other) {
     x += other.x;
     y += other.y;
