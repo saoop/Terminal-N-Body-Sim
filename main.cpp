@@ -6,7 +6,9 @@
 #include "input_controller.h"
 #include "math_utils.h"
 #include "rendering/windows.h"
-#include "simulation.h"
+#include "simulation/bodies.h"
+#include "simulation/force_computers.h"
+#include "simulation/simulation.h"
 #include "utils.h"
 #include <memory>
 

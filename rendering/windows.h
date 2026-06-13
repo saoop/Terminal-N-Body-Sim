@@ -2,7 +2,7 @@
 #define DISPLAY_H
 
 #include "../math_utils.h"
-#include "../simulation.h"
+#include "../simulation/bodies.h"
 #include "consts.h"
 #include "grid.h"
 #include <format>

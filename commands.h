@@ -2,7 +2,7 @@
 #define COMMANDS_H
 
 #include "rendering/windows.h"
-#include "simulation.h"
+#include "simulation/simulation.h"
 
 struct Command {
   virtual void execute() const = 0;
