@@ -25,6 +25,7 @@ int main() {
   constexpr double MOON_MASS = 7.342e22;
   constexpr double MOON_EARTH_DIST = 3.844e8;
   constexpr double MOON_ORBITAL_VEL = 1022.0; // m/s relative to Earth
+  constexpr double G = 6.674e-11;             // N⋅m²/kg²
 
   struct winsize w;
 
@@ -35,9 +36,19 @@ int main() {
   // BruteForceForcesComputer<double> forceComputer{100};
   Simulation<double> sim{
       std::make_unique<BarnesHutsForcesComputer<double>>(100), 1};
+
+  // Simulation<double> sim{
+  //     std::make_unique<BarnesHutsForcesComputer<double>>(100), 2629743 /
+  //     1000};
+
   ResourcesWindow resourcesWindow{0, 0, w.ws_col - 2, 1};
 
-  SimulationWindow renderer{0, 3, w.ws_col * 0.7 - 3, w.ws_row - 6};
+  SimulationWindow renderer{
+      0,
+      3,
+      w.ws_col * 0.7 - 3,
+      w.ws_row - 6,
+  };
   MetricsWindow sideInfo{w.ws_col * 0.7 - 1, 3, w.ws_col * 0.3, w.ws_row - 6};
 
   // Timer timer {};
@@ -70,7 +81,7 @@ int main() {
 
   // Create some bodies to the left
   for (int i{0}; i < 300; i++) {
-    sim.addBody({{-10000 + 2000 * (rand() % 101), (rand() % 101) * 100},
+    sim.addBody({{-10000 + 200 * (rand() % 101), (rand() % 101) * 100},
                  {0, 0},
                  {0, 0},
                  {2000},

@@ -120,7 +120,6 @@ template <typename T> struct QuadTree {
       return;
 
     if (type == Empty) {
-
       type = Leaf;
     } else if (type == Leaf) {
       // split
@@ -153,18 +152,26 @@ template <typename T> struct QuadTree {
   }
 
   Vec2<T> traverse(Vec2<T> check_pos) { // basically calculates the field.
-    if (center_of_mass.x == check_pos.x && center_of_mass.y == check_pos.y) {
+    // First check if it's the same body
+    Vec2<T> direction{-center_of_mass + check_pos};
+    T dist{direction.norm()};
+
+    if (dist < 100) { // hardcoded for now. take radius in
       return {0, 0};
     }
-    Vec2<T> direction{check_pos - center_of_mass};
-    T dist{direction.norm()}; // TODO zero check
-    if (width / dist < 0.5)
-      return direction * total_mass / dist;
-
-    if (type == Empty || type == Leaf) {
-      return direction * total_mass / dist;
+    if (type == Empty) {
+      return {0, 0};
     }
-    // F = F1 + F2 = G ( m0 m2 / r1 + m0m2/r2) =  G m0 (m2/r1 + m2 /r2)
+
+    T d3 = dist * dist * dist;
+
+    if (type == Leaf) {
+      return direction * total_mass / d3;
+    }
+
+    if (width / dist < 0.5)
+      return direction * total_mass / d3;
+
     Vec2<T> field{0, 0};
     for (auto &child : children) {
       field += child->traverse(check_pos);
@@ -199,8 +206,7 @@ public:
     for (int i = 0; i < bodies.size(); i++) {
       // traverse the tree.
       Vec2<T> field{root.traverse(bodies[i].getPos())};
-
-      Vec2<T> force{field * (this->m_G / bodies[i].getMass())};
+      Vec2<T> force{field * (this->m_G * bodies[i].getMass())};
       forces.at(i) = force;
     }
   }
