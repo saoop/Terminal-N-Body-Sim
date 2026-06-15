@@ -91,10 +91,10 @@ int main() {
   sim.addBody({{x_offset, y_offset}, {-vel_offset, 0}, {0, 0}, {M}, 400});
 
   // Add bodies around the sun
-  for (int i = 0; i < 1000; i++) {
+  for (int i = 0; i < 5000; i++) {
 
     double rad = 2 * 3.14 * ((double)rand() / RAND_MAX);
-    double r = R + 50 * (rand() % 100);
+    double r = R + 100 * (rand() % 100);
     double x = std::cos(rad);
     double y = std::sin(rad);
     double v = std::sqrt(G * M / r);

@@ -35,24 +35,15 @@ public:
     }
 
     // Compute the force array.
-    std::vector<Vec2<T>> forces(m_bodies.size() * m_bodies.size());
+    std::vector<Vec2<T>> forces(m_bodies.size());
     m_forcesComputer->computeForces(forces, m_bodies);
 
     // Apply forces to compute new accelerations for each body
     std::vector<Vec2<T>> accelerations(m_bodies.size());
 
-    for (std::size_t i{0}; i < m_bodies.size(); i++) {
-      Vec2<T> sum{};
-#pragma omp parallel for reduction(vec2_plus : sum)
-      for (std::size_t j = i + 1; j < m_bodies.size(); j++)
-
-      {
-        sum += (forces.at(i * m_bodies.size() + j) / m_bodies[i].getMass());
-        accelerations[j] +=
-            (-forces.at(i * m_bodies.size() + j) / m_bodies[j].getMass());
-      }
-
-      accelerations[i] += sum;
+#pragma omp parallel for
+    for (std::size_t i = 0; i < m_bodies.size(); i++) {
+      accelerations[i] = forces.at(i) / m_bodies[i].getMass();
     }
 
     // Apply the accelerations.

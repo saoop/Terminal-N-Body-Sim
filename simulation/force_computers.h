@@ -53,13 +53,19 @@ public:
 
   void computeForces(std::vector<Vec2<T>> &forces,
                      std::vector<CircleBody<T>> &bodies) override {
+    // allocate the 2d grid of forces
+    // std::vector<Vec2<T>> grid_froces(bodies.size() * bodies.size());
+
 #pragma omp parallel for
     for (std::size_t i = 0; i < bodies.size(); i++) {
-#pragma omp parallel for
-      for (std::size_t j = i + 1; j < bodies.size(); j++) {
+      Vec2<T> sum{};
+#pragma omp parallel for reduction(vec2_plus : sum)
+      for (std::size_t j = 0; j < bodies.size(); j++) {
         Vec2<T> force = computeForce(bodies[i], bodies[j]);
-        forces.at(i * bodies.size() + j) = force;
+        // forces.at(i * bodies.size() + j) = force;
+        sum += force;
       }
+      forces.at(i) = sum;
     }
   }
 };
