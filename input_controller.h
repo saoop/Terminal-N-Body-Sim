@@ -1,14 +1,25 @@
 #ifndef INPUT_CONTROLLER_H
 #define INPUT_CONTROLLER_H
 
-#include "commands.h"
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <termios.h>
 #include <unistd.h>
 #include <unordered_map>
 
-enum class Key { UP, DOWN, RIGHT, LEFT, SPACE, ZOOM_IN, ZOOM_OUT, OTHER, NONE };
+enum class Key {
+  UP,
+  DOWN,
+  RIGHT,
+  LEFT,
+  SPACE,
+  ZOOM_IN,
+  ZOOM_OUT,
+  ENTER,
+  OTHER,
+  NONE
+};
 
 void enableRawMode(termios &original) {
   termios raw;
@@ -39,7 +50,6 @@ struct RawMode {
 Key readKey() {
   char buf[3];
   int n = read(STDIN_FILENO, buf, 3);
-
   if (n <= 0)
     return Key::NONE;
 
@@ -52,6 +62,8 @@ Key readKey() {
                           // diffferently on different terminals.`
   case '+':
     return Key::ZOOM_IN;
+  case '\n':
+    return Key::ENTER;
   }
 
   switch (buf[2]) {
@@ -64,22 +76,23 @@ Key readKey() {
   case 'D':
     return Key::LEFT;
   }
+
   return Key::OTHER;
 }
 
 class KeyEventHandler {
-  std::unordered_map<Key, std::unique_ptr<Command>> commands;
+  std::unordered_map<Key, std::function<void()>> callbacks;
 
 public:
-  void addCommand(Key key, std::unique_ptr<Command> command) {
-    commands[key] = std::move(command);
+  void addCallback(Key key, std::function<void()> callback) {
+    callbacks[key] = callback;
   }
 
 public:
   void handleKeyPress() {
     Key key = readKey();
     if (key != Key::NONE && key != Key::OTHER) {
-      commands.at(key)->execute();
+      callbacks.at(key)();
     }
   }
 };

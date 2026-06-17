@@ -1,3 +1,5 @@
+#ifndef UTILS_H
+#define UTILS_H
 #include <bits/chrono.h>
 #include <deque>
 #include <memory>
@@ -79,3 +81,4 @@ public:
     usleep(to_sleep);
   }
 };
+#endif

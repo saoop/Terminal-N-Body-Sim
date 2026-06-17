@@ -3,83 +3,18 @@
 
 #include "../math_utils.h"
 #include "../simulation/bodies.h"
+#include "button.h"
 #include "consts.h"
 #include "grid.h"
+#include "window_base.h"
 #include <format>
 #include <iostream>
 #include <map>
 #include <string>
 #include <unistd.h>
-
 #include <vector>
 
 using namespace pixels;
-
-class Window {
-protected:
-  int m_pos_x{}; // upper left corner
-  int m_pos_y{};
-  int m_width{};
-  int m_height{};
-  void moveCursor(int x, int y) const {
-    // ANSI: move to row y+1, col x+1 (1-indexed)
-    std::cout << "\033[" << (m_pos_y + y + 1) << ";" << (m_pos_x + x + 1)
-              << "H";
-  }
-
-  void startRendering() const {
-    std::cout << "\033[s"; // save cursor position
-  }
-
-  void stopRendering() const {
-    std::cout << "\033[u"; // restore cursor position
-    std::cout.flush();
-  }
-
-  // Truncate string to fit window width.
-  // CAUTION: only works correctly with plain ASCII text, not multi-byte UTF-8.
-  void printTruncated(const std::string &s, int max_width) const {
-    if (static_cast<int>(s.size()) < max_width) {
-      std::cout << s;
-      return;
-    }
-    std::cout << s.substr(0, max_width - 1) + "…";
-  }
-  void drawTopBorder() const {
-    moveCursor(0, 0);
-    std::cout << border_pixels.at(Border::UPPER_LEFT);
-    for (int i = 0; i < m_width; i++)
-      std::cout << border_pixels.at(Border::HORIZONTAL);
-    std::cout << border_pixels.at(Border::UPPER_RIGHT);
-  }
-
-  void drawBottomBorder() const {
-    moveCursor(0, m_height + 1);
-    std::cout << border_pixels.at(Border::BOTTOM_LEFT);
-    for (int i = 0; i < m_width; i++)
-      std::cout << border_pixels.at(Border::HORIZONTAL);
-    std::cout << border_pixels.at(Border::BOTTOM_RIGHT);
-  }
-
-  void drawSideBorder() const {
-    for (int i = 1; i < m_height + 1; i++) {
-      moveCursor(0, i);
-      std::cout << border_pixels.at(Border::VERTICAL);
-      moveCursor(1 + m_width, i);
-      std::cout << border_pixels.at(Border::VERTICAL);
-    }
-  }
-
-  void drawFullBorder() const {
-    drawTopBorder();
-    drawBottomBorder();
-    drawSideBorder();
-  }
-
-public:
-  Window(int pos_x, int pos_y, int width, int height)
-      : m_pos_x{pos_x}, m_pos_y{pos_y}, m_width{width}, m_height{height} {}
-};
 
 class ResourcesWindow : public Window {
 public:
@@ -198,17 +133,51 @@ public:
   }
 };
 
-// class WindowManager {
-// private:
-//   std::vector<Window &> m_windows;
+// state change command?
+//  always have app
+// app.stateChange(command){
+//  command.execute(); -> changes state???
+// }
 
-// public:
-//   void addWindow(Window &new_window) { m_windows.push_back(new_window); }
-//   void render() {
-//     for (auto &window : m_windows) {
-//       window.render();
-//     }
-//   }
-// };
+class StartingWindow : public Window {
+private:
+  // App &m_app;
+  std::vector<std::unique_ptr<Button>> m_buttons;
+  int m_selected{};
+
+public:
+  StartingWindow(int pos_x, int pos_y, int width, int height)
+      : Window{pos_x, pos_y, width, height} {}
+
+  void addButton(std::unique_ptr<Button> button) {
+    m_buttons.push_back(std::move(button));
+  }
+
+  void selectNext() {
+    // std::cout << "next";
+    m_selected = m_selected == m_buttons.size() - 1 ? 0 : m_selected + 1;
+  }
+
+  void selectPrevious() {
+    // std::cout << "lol";
+    m_selected = m_selected == 0 ? m_buttons.size() - 1 : m_selected - 1;
+  }
+
+  void pressButton() { m_buttons.at(m_selected)->press(); }
+
+  void render() {
+    startRendering();
+
+    drawFullBorder();
+
+    moveCursor(m_pos_x, m_pos_y);
+    for (int i = 0; i < m_buttons.size(); i++) {
+      moveCursor(1, i + 1);
+      // if ()
+      m_buttons.at(i)->render(m_selected == i);
+    }
+    stopRendering();
+  }
+};
 
 #endif // DISPLAY_H

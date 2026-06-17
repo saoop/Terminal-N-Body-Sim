@@ -109,7 +109,7 @@ template <typename T> struct QuadTree {
   Vec2<T> traverse(Vec2<T> check_pos,
                    double theta) { // basically calculates the field.
     // First check if it's the same body
-    Vec2<T> direction{-center_of_mass + check_pos};
+    Vec2<T> direction{center_of_mass - check_pos};
     T dist{direction.norm()};
 
     if (dist < 100) { // hardcoded for now. take radius in
