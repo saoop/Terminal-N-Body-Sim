@@ -1,0 +1,75 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/local/share/cmake-4.3/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/home/petr/.config/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/home/petr/.config/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/home/petr/.elan/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+      - "/snap/bin/"
+      - "/home/petr/.local/bin/"
+      - "/opt/nvim-linux-x86_64/bin/"
+      - "/home/petr/arduinoIDE/arduino-ide_2.3.6_Linux_64bit/"
+    searched_directories:
+      - "/home/petr/.config/Code/User/globalStorage/github.copilot-chat/debugCommand/uname"
+      - "/home/petr/.config/Code/User/globalStorage/github.copilot-chat/copilotCli/uname"
+      - "/home/petr/.elan/bin/uname"
+      - "/usr/local/sbin/uname"
+      - "/usr/local/bin/uname"
+      - "/usr/sbin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/home/petr/.config/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/home/petr/.config/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/home/petr/.elan/bin"
+        - "/home/petr/.elan/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+        - "/snap/bin"
+        - "/home/petr/.local/bin"
+        - "/opt/nvim-linux-x86_64/bin"
+        - "/home/petr/arduinoIDE/arduino-ide_2.3.6_Linux_64bit"
+        - "/home/petr/.local/bin"
+        - "/opt/nvim-linux-x86_64/bin"
+        - "/home/petr/arduinoIDE/arduino-ide_2.3.6_Linux_64bit"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-4.3/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      The system is: Linux - 6.17.0-35-generic - x86_64
+...

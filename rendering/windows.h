@@ -6,6 +6,7 @@
 #include "button.h"
 #include "consts.h"
 #include "grid.h"
+#include "utils.h"
 #include "window_base.h"
 #include <format>
 #include <iostream>
@@ -55,8 +56,6 @@ public:
 
 class SimulationWindow : public Window {
 private:
-  int m_center_x{};
-  int m_center_y{};
   double m_pixel_size{1.496e11 / 5}; // 1 AU in meters};
   int m_offset_x{0};
   int m_offset_y{0};
@@ -65,8 +64,7 @@ public:
   SimulationWindow(int pos_x, int pos_y, int width, int height,
                    double pixel_size = 1000)
       : Window{pos_x, pos_y, width, height} {
-    m_center_x = m_width / 2;
-    m_center_y = m_height / 2;
+    clearFullTerminal();
     m_pixel_size = pixel_size;
   }
 
@@ -133,34 +131,50 @@ public:
   }
 };
 
-// state change command?
-//  always have app
-// app.stateChange(command){
-//  command.execute(); -> changes state???
-// }
-
 class StartingWindow : public Window {
 private:
-  // App &m_app;
   std::vector<std::unique_ptr<Button>> m_buttons;
   int m_selected{};
 
+  void drawWelcomeText() {
+    int width_of_text = 10;
+    const char *text = "░▒▓█ TERMINAL N-BODY SIMULATION █▓▒░\n";
+    int starting_point{m_center_x - 36 / 2};
+    moveCursor(starting_point, 1);
+    std::cout << text;
+  }
+
 public:
   StartingWindow(int pos_x, int pos_y, int width, int height)
-      : Window{pos_x, pos_y, width, height} {}
+      : Window{pos_x, pos_y, width, height} {
+    clearFullTerminal();
+  }
+
+  void resetSelected() { m_selected = 0; }
+  void reset() { clearFullTerminal(); }
 
   void addButton(std::unique_ptr<Button> button) {
     m_buttons.push_back(std::move(button));
   }
 
+  void removeButton(int id) {
+    auto it = m_buttons.begin() + id;
+    m_buttons.erase(it);
+  }
+
+  void removeButtonByTag(std::string tag) {
+    std::erase_if(m_buttons,
+                  [tag](const auto &b) { return tag == b->getTag(); });
+  }
+
   void selectNext() {
     // std::cout << "next";
-    m_selected = m_selected == m_buttons.size() - 1 ? 0 : m_selected + 1;
+    m_selected = m_selected >= m_buttons.size() - 1 ? 0 : m_selected + 1;
   }
 
   void selectPrevious() {
     // std::cout << "lol";
-    m_selected = m_selected == 0 ? m_buttons.size() - 1 : m_selected - 1;
+    m_selected = m_selected <= 0 ? m_buttons.size() - 1 : m_selected - 1;
   }
 
   void pressButton() { m_buttons.at(m_selected)->press(); }
@@ -169,10 +183,11 @@ public:
     startRendering();
 
     drawFullBorder();
+    drawWelcomeText();
 
     moveCursor(m_pos_x, m_pos_y);
     for (int i = 0; i < m_buttons.size(); i++) {
-      moveCursor(1, i + 1);
+      moveCursor(1, i + 2);
       // if ()
       m_buttons.at(i)->render(m_selected == i);
     }

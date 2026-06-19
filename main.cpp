@@ -1,13 +1,13 @@
+#include "app.h"
+#include "parser.h"
+#include "states/states.h"
+#include <cmath>
 #include <iostream>
+#include <memory>
+#include <string>
+#include <sys/ioctl.h>
 #include <unistd.h>
 #include <vector>
-
-#include "app.h"
-#include <cmath>
-#include <memory>
-
-#include "states/states.h"
-#include <sys/ioctl.h>
 
 int main() {
   constexpr double SUN_MASS = 1.989e30;
@@ -23,11 +23,11 @@ int main() {
   // constexpr double G = 6.674e-11;             // N⋅m²/kg²
   constexpr double G = 100;
 
-  std::cout << "\033[2J"; // clear entire screen once
-  std::cout << "\033[H";  // move to top left once
-  std::cout << "\033[s";  // save this as our origin
-
   App app{};
+  // using namespace std::string_literals;
+  // const std::string &path =
+  //     "/home/petr/N-Body/Terminal-N-Body-Sim/scenarios/custom_scenario.yaml";
+  // parseYAML(path);
   // std::unique_ptr<MenuState> menu = ;
   app.setState(std::make_unique<MenuState>(app));
   app.run();

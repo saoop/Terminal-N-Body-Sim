@@ -1,0 +1,11 @@
+scenario: custom
+
+bodies:
+  - mass: 1.989e30
+    pos: [0, 0]
+    vel: [0, 0]
+    radius: 300
+  - mass: 5.972e24
+    pos: [1.496e11, 0]
+    vel: [0, 29783]
+    radius: 100

@@ -12,6 +12,8 @@ inline const std::map<int, const char *> several_bodies_in_pixel{
     {7, "⡿"}, {8, "⣿"}, {9, "░"}, {10, "▒"}, {11, "▓"}, {12, "█"},
 };
 
+inline const char *font_pixel = "█";
+
 inline const int MAX_BODIES{12};
 inline const int MAX_INTENSITY{6};
 

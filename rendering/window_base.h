@@ -5,6 +5,7 @@
 #include "button.h"
 #include "consts.h"
 #include "grid.h"
+#include "utils.h"
 #include <format>
 #include <iostream>
 #include <map>
@@ -20,6 +21,9 @@ protected:
   int m_pos_y{};
   int m_width{};
   int m_height{};
+  int m_center_x{};
+  int m_center_y{};
+
   void moveCursor(int x, int y) const {
     // ANSI: move to row y+1, col x+1 (1-indexed)
     std::cout << "\033[" << (m_pos_y + y + 1) << ";" << (m_pos_x + x + 1)
@@ -27,6 +31,8 @@ protected:
   }
 
   void startRendering() const {
+    // clearFullTerminal();
+
     std::cout << "\033[s"; // save cursor position
   }
 
@@ -77,5 +83,8 @@ protected:
 
 public:
   Window(int pos_x, int pos_y, int width, int height)
-      : m_pos_x{pos_x}, m_pos_y{pos_y}, m_width{width}, m_height{height} {}
+      : m_pos_x{pos_x}, m_pos_y{pos_y}, m_width{width}, m_height{height} {
+    m_center_x = m_pos_x + m_width / 2;
+    m_center_y = m_pos_y + m_height / 2;
+  }
 };

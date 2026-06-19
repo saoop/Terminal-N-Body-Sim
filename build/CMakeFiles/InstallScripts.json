@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/petr/N-Body/Terminal-N-Body-Sim/build/cmake_install.cmake",
+		"/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-build/cmake_install.cmake",
+		"/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-build/util/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

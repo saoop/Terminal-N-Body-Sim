@@ -13,6 +13,7 @@ private:
   int m_height;
   std::string m_text;
   std::function<void()> m_on_press;
+  std::string m_tag;
   // std::unique_ptr<Command> m_command;
 
   // bool m_selected = false;
@@ -26,9 +27,9 @@ private:
 
 public:
   Button(int x, int y, int width, int height, std::string text,
-         std::function<void()> on_press)
+         std::function<void()> on_press, std::string tag = "default")
       : m_x{x}, m_y{y}, m_width{width}, m_height{height}, m_text{text},
-        m_on_press{on_press} {}
+        m_on_press{on_press}, m_tag{tag} {}
   // void select() { m_selected = !m_selected; }
   void render(bool selected) {
     if (selected) {
@@ -38,5 +39,6 @@ public:
     }
   }
   void press() { m_on_press(); };
+  std::string const &getTag() { return m_tag; }
 };
 #endif
