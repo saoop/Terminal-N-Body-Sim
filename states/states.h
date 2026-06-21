@@ -17,6 +17,7 @@
 #include "state_base.h"
 #include <cmath>
 #include <memory>
+
 #include <sys/ioctl.h>
 
 class SimulationState : public State {
@@ -35,36 +36,44 @@ public:
 
     SimulationParams<double> simParams = parseYAML(filename);
 
-    // create bodies
     constexpr double G = 100;
 
     struct winsize w;
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
-    // Simulation<double> sim{2629743 / 1000};
-    // BruteForceForcesComputer<double> forceComputer{100};
-    auto force_computer = std::make_unique<BarnesHutsForcesComputer<double>>(G);
-    sim = std::make_unique<Simulation<double>>(std::move(force_computer), 1);
+    // Build simulation from parameters
+    if (simParams.forceCalcType == ForceCalcType::BarnesHut) {
+      auto force_computer =
+          std::make_unique<BarnesHutsForcesComputer<double>>(simParams.G);
+      sim = std::make_unique<Simulation<double>>(std::move(force_computer),
+                                                 simParams.dt);
+    } else if (simParams.forceCalcType == ForceCalcType::BruteForce) {
+      auto force_computer =
+          std::make_unique<BruteForceForcesComputer<double>>(simParams.G);
+      sim = std::make_unique<Simulation<double>>(std::move(force_computer),
+                                                 simParams.dt);
+    }
 
+    // create bodies
+    for (auto bodyParam : simParams.bodies) {
+      sim->addBody({bodyParam.m_pos, bodyParam.m_vel, bodyParam.m_acc,
+                    bodyParam.m_mass, bodyParam.radius});
+    }
+
+    // Rendering
     resourcesWindow = std::make_unique<ResourcesWindow>(0, 0, w.ws_col - 2, 1);
 
     renderer = std::make_unique<SimulationWindow>(0, 3, w.ws_col * 0.7 - 3,
                                                   w.ws_row - 6);
 
-    // startingWindow = {0, 0, w.ws_col - 2, w.ws_row - 2};
-
     sideInfo = std::make_unique<MetricsWindow>(w.ws_col * 0.7 - 1, 3,
                                                w.ws_col * 0.3, w.ws_row - 6);
 
-    // Timer timer {};
-
     fpsController = std::make_unique<FPSController>(100, 10000);
 
+    // Key press handling.
     keyEventHandler = std::make_unique<KeyEventHandler>();
-
-    // TODO: commands -> lambdas.
-    // Moving camera
 
     keyEventHandler->addCallback(Key::UP, [&]() { renderer->nudge(0, -1); });
 
@@ -78,45 +87,6 @@ public:
     // Zooming in and out
     keyEventHandler->addCallback(Key::ZOOM_IN, [&]() { renderer->zoom(0.5); });
     keyEventHandler->addCallback(Key::ZOOM_OUT, [&]() { renderer->zoom(2); });
-
-    // Black hole / or sun
-    // double M = 10000;
-    // double R = 5000;
-    // double M_planet = M * 0.0001;
-    // double vel_offset = 10;
-    // double x_offset = 40000;
-    // double y_offset = 2000;
-
-    // sim->addBody({{-x_offset, -y_offset}, {vel_offset, 0}, {0, 0}, {M},
-    // 400}); sim->addBody({{x_offset, y_offset}, {-vel_offset, 0}, {0, 0}, {M},
-    // 400});
-    for (auto bodyParam : simParams.bodies) {
-      // std::cout << "added";
-      sim->addBody({bodyParam.m_pos, bodyParam.m_vel, bodyParam.m_acc,
-                    bodyParam.m_mass, bodyParam.radius});
-    }
-
-    // // Add bodies around the sun
-    // for (int i = 0; i < 5000; i++) {
-    //   double rad = 2 * 3.14 * ((double)rand() / RAND_MAX);
-    //   double r = R + 200 * (rand() % 100);
-    //   double x = std::cos(rad);
-    //   double y = std::sin(rad);
-    //   double v = std::sqrt(G * M / r);
-    //   double vel_x = -y;
-    //   double vel_y = x;
-
-    //   sim->addBody({{x_offset + r * x, y_offset + r * y},
-    //                 {-vel_offset + v * vel_x, v * vel_y},
-    //                 {0, 0},
-    //                 {M_planet},
-    //                 {100}});
-    //   sim->addBody({{-x_offset + r * x, -y_offset + r * y},
-    //                 {vel_offset + v * vel_x, v * vel_y},
-    //                 {0, 0},
-    //                 {M_planet},
-    //                 {100}});
-    // }
   }
 
   void update() override {

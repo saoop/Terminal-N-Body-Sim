@@ -9,10 +9,14 @@ template <typename T> struct BodyParams {
   T m_mass{};
   T radius{};
 };
+enum class ForceCalcType { BruteForce, BarnesHut };
 
 template <typename T> struct SimulationParams {
   std::vector<BodyParams<T>> bodies;
   std::string name;
+  T G;
+  double dt;
+  ForceCalcType forceCalcType;
 };
 
 SimulationParams<double> parseYAML(const std::string &path);

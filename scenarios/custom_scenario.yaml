@@ -1,11 +1,15 @@
 scenario: custom
-
+name: "Sun and Earth"
+G: 6.674e-11
+dt: 1314000
 bodies:
   - mass: 1.989e30
     pos: [0, 0]
     vel: [0, 0]
+    acc: [0,0]
     radius: 300
   - mass: 5.972e24
     pos: [1.496e11, 0]
     vel: [0, 29783]
+    acc: [0, 0]
     radius: 100

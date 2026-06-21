@@ -24,11 +24,6 @@ int main() {
   constexpr double G = 100;
 
   App app{};
-  // using namespace std::string_literals;
-  // const std::string &path =
-  //     "/home/petr/N-Body/Terminal-N-Body-Sim/scenarios/custom_scenario.yaml";
-  // parseYAML(path);
-  // std::unique_ptr<MenuState> menu = ;
   app.setState(std::make_unique<MenuState>(app));
   app.run();
 
