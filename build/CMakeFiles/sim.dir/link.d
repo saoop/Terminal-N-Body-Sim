@@ -4,7 +4,7 @@ sim: \
   /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o \
   CMakeFiles/sim.dir/main.cpp.o \
   CMakeFiles/sim.dir/parser.cpp.o \
-  _deps/yaml-cpp-build/libyaml-cppd.a \
+  _deps/yaml-cpp-build/libyaml-cpp.a \
   /usr/lib/gcc/x86_64-linux-gnu/13/libgomp.so \
   /usr/lib/x86_64-linux-gnu/libpthread.a \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
@@ -45,7 +45,7 @@ CMakeFiles/sim.dir/main.cpp.o:
 
 CMakeFiles/sim.dir/parser.cpp.o:
 
-_deps/yaml-cpp-build/libyaml-cppd.a:
+_deps/yaml-cpp-build/libyaml-cpp.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libgomp.so:
 

@@ -3,7 +3,7 @@ sandbox: \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o \
   CMakeFiles/yaml-cpp-sandbox.dir/sandbox.cpp.o \
-  ../libyaml-cppd.a \
+  ../libyaml-cpp.a \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
@@ -41,7 +41,7 @@ sandbox: \
 
 CMakeFiles/yaml-cpp-sandbox.dir/sandbox.cpp.o:
 
-../libyaml-cppd.a:
+../libyaml-cpp.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
 

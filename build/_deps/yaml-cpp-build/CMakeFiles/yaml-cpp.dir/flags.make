@@ -6,5 +6,5 @@ CXX_DEFINES = -DYAML_CPP_STATIC_DEFINE
 
 CXX_INCLUDES = -I/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include -I/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/src
 
-CXX_FLAGS = -g -std=gnu++20 -fPIC
+CXX_FLAGS = -O3 -march=native -std=gnu++20 -fPIC
 

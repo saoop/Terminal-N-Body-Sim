@@ -112,7 +112,7 @@ private:
   std::unique_ptr<KeyEventHandler> keyEventHandler;
   struct winsize w;
   App &m_app;
-  std::string m_chosen_file;
+  std::string m_chosen_file = "../scenarios/two_galaxies.yaml"; // default
 
   // Displays the yaml files as buttons
   void closeDisplayFiles() {

@@ -112,7 +112,7 @@ sim: CMakeFiles/sim.dir/main.cpp.o
 sim: CMakeFiles/sim.dir/parser.cpp.o
 sim: CMakeFiles/sim.dir/build.make
 sim: CMakeFiles/sim.dir/compiler_depend.ts
-sim: _deps/yaml-cpp-build/libyaml-cppd.a
+sim: _deps/yaml-cpp-build/libyaml-cpp.a
 sim: /usr/lib/gcc/x86_64-linux-gnu/13/libgomp.so
 sim: /usr/lib/x86_64-linux-gnu/libpthread.a
 sim: CMakeFiles/sim.dir/link.txt

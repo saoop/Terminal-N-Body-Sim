@@ -17,10 +17,12 @@ SimulationParams<double> loadTwoGalaxies() {
   simulationParams.dt = 1;
   simulationParams.G = 100;
   simulationParams.forceCalcType = ForceCalcType::BarnesHut;
+
   simulationParams.bodies.push_back(BodyParams<double>{
       {-x_offset, -y_offset}, {vel_offset, 0}, {0, 0}, {M}, 400});
   simulationParams.bodies.push_back(BodyParams<double>{
       {x_offset, y_offset}, {-vel_offset, 0}, {0, 0}, {M}, 400});
+
   for (int i = 0; i < 5000; i++) {
     double rad = 2 * 3.14 * ((double)rand() / RAND_MAX);
     double r = R + 200 * (rand() % 100);

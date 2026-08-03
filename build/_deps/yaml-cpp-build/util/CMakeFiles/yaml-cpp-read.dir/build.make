@@ -96,7 +96,7 @@ yaml__cpp__read_EXTERNAL_OBJECTS =
 _deps/yaml-cpp-build/util/read: _deps/yaml-cpp-build/util/CMakeFiles/yaml-cpp-read.dir/read.cpp.o
 _deps/yaml-cpp-build/util/read: _deps/yaml-cpp-build/util/CMakeFiles/yaml-cpp-read.dir/build.make
 _deps/yaml-cpp-build/util/read: _deps/yaml-cpp-build/util/CMakeFiles/yaml-cpp-read.dir/compiler_depend.ts
-_deps/yaml-cpp-build/util/read: _deps/yaml-cpp-build/libyaml-cppd.a
+_deps/yaml-cpp-build/util/read: _deps/yaml-cpp-build/libyaml-cpp.a
 _deps/yaml-cpp-build/util/read: _deps/yaml-cpp-build/util/CMakeFiles/yaml-cpp-read.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/petr/N-Body/Terminal-N-Body-Sim/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable read"
 	cd /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-build/util && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/yaml-cpp-read.dir/link.txt --verbose=$(VERBOSE)
