@@ -13,6 +13,15 @@ N-Body physics simulation with rendering in the terminal.
 ```bash
 ./build/sim
 ```
+### Controls
+`Arrows` - pan the camera
+
+`Space-bar` - pause/resume simulation
+
+`Ctr` + `+` - zoom in
+
+`Ctr` + `-` - zoom out
+
 
 ## Building
 
