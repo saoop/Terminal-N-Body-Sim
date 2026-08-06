@@ -1,5 +1,5 @@
 #pragma once
-#include "input_controller.h"
+#include "common/input_controller.h"
 #include "states/state_base.h"
 #include <memory>
 class App {

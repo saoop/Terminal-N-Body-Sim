@@ -6,12 +6,6 @@
   "output": "CMakeFiles/sim.dir/main.cpp.o"
 },
 {
-  "directory": "/home/petr/N-Body/Terminal-N-Body-Sim/build",
-  "command": "/usr/bin/c++ -DYAML_CPP_STATIC_DEFINE -I/home/petr/N-Body/Terminal-N-Body-Sim -I/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include -O3 -march=native -std=gnu++20 -fopenmp -o CMakeFiles/sim.dir/parser.cpp.o -c /home/petr/N-Body/Terminal-N-Body-Sim/parser.cpp",
-  "file": "/home/petr/N-Body/Terminal-N-Body-Sim/parser.cpp",
-  "output": "CMakeFiles/sim.dir/parser.cpp.o"
-},
-{
   "directory": "/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-build",
   "command": "/usr/bin/c++ -DYAML_CPP_STATIC_DEFINE -I/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include -I/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/src -O3 -march=native -std=gnu++20 -fPIC -o CMakeFiles/yaml-cpp.dir/src/contrib/graphbuilder.cpp.o -c /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/src/contrib/graphbuilder.cpp",
   "file": "/home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/src/contrib/graphbuilder.cpp",

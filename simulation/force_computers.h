@@ -1,7 +1,7 @@
 #ifndef FORCE_COMPUTERS_H
 #define FORCE_COMPUTERS_H
 
-#include "../math_utils.h"
+#include "../common/math_utils.h"
 #include "../simulation/bodies.h"
 #include "utils.h"
 #include <limits>

@@ -1,7 +1,7 @@
 CMakeFiles/sim.dir/main.cpp.o: \
  /home/petr/N-Body/Terminal-N-Body-Sim/main.cpp \
  /usr/include/stdc-predef.h /home/petr/N-Body/Terminal-N-Body-Sim/app.h \
- /home/petr/N-Body/Terminal-N-Body-Sim/input_controller.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/common/input_controller.h \
  /usr/include/c++/13/functional \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -236,8 +236,8 @@ CMakeFiles/sim.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/termios-misc.h \
  /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/state_base.h \
- /home/petr/N-Body/Terminal-N-Body-Sim/parser.h \
- /home/petr/N-Body/Terminal-N-Body-Sim/math_utils.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/parser/parser.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/parser/../common/math_utils.h \
  /usr/include/c++/13/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
@@ -262,6 +262,64 @@ CMakeFiles/sim.dir/main.cpp.o: \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
  /usr/include/c++/13/tr1/riemann_zeta.tcc \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/omp.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/yaml.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/parser.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/dll.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/emitter.h \
+ /usr/include/c++/13/cstring /usr/include/string.h /usr/include/strings.h \
+ /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+ /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+ /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/binary.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/emitterdef.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/emittermanip.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/null.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/ostream_wrapper.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/fptostring.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/emitterstyle.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/stlemitter.h \
+ /usr/include/c++/13/list /usr/include/c++/13/bits/stl_list.h \
+ /usr/include/c++/13/bits/list.tcc /usr/include/c++/13/set \
+ /usr/include/c++/13/bits/stl_tree.h /usr/include/c++/13/bits/stl_set.h \
+ /usr/include/c++/13/bits/stl_multiset.h /usr/include/c++/13/map \
+ /usr/include/c++/13/bits/stl_map.h \
+ /usr/include/c++/13/bits/stl_multimap.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/exceptions.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/mark.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/noexcept.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/traits.h \
+ /usr/include/c++/13/utility /usr/include/c++/13/bits/stl_relops.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/node.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/iterator_fwd.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/ptr.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/type.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/impl.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/memory.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/node.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/node_ref.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/node_data.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/node_iterator.h \
+ /usr/include/c++/13/iterator /usr/include/c++/13/bits/stream_iterator.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/iterator.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/iterator.h \
+ /usr/include/c++/13/atomic \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/convert.h \
+ /usr/include/c++/13/unordered_set \
+ /usr/include/c++/13/bits/unordered_set.h /usr/include/c++/13/valarray \
+ /usr/include/c++/13/algorithm /usr/include/c++/13/bits/ranges_algo.h \
+ /usr/include/c++/13/pstl/glue_algorithm_defs.h \
+ /usr/include/c++/13/bits/valarray_array.h \
+ /usr/include/c++/13/bits/valarray_array.tcc \
+ /usr/include/c++/13/bits/valarray_before.h \
+ /usr/include/c++/13/bits/slice_array.h \
+ /usr/include/c++/13/bits/valarray_after.h \
+ /usr/include/c++/13/bits/gslice.h \
+ /usr/include/c++/13/bits/gslice_array.h \
+ /usr/include/c++/13/bits/mask_array.h \
+ /usr/include/c++/13/bits/indirect_array.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/detail/impl.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/parse.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/build/_deps/yaml-cpp-src/include/yaml-cpp/node/emit.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/states.h \
  /usr/include/c++/13/filesystem /usr/include/c++/13/bits/fs_fwd.h \
  /usr/include/c++/13/bits/chrono.h /usr/include/c++/13/ratio \
@@ -273,39 +331,34 @@ CMakeFiles/sim.dir/main.cpp.o: \
  /usr/include/libintl.h /usr/include/c++/13/bits/codecvt.h \
  /usr/include/c++/13/bits/locale_facets_nonio.tcc \
  /usr/include/c++/13/bits/locale_conv.h /usr/include/c++/13/iomanip \
- /usr/include/c++/13/bits/quoted_string.h /usr/include/c++/13/sstream \
- /usr/include/c++/13/bits/sstream.tcc /usr/include/c++/13/codecvt \
+ /usr/include/c++/13/bits/quoted_string.h /usr/include/c++/13/codecvt \
  /usr/include/c++/13/bits/fs_dir.h /usr/include/c++/13/bits/fs_ops.h \
  /usr/include/c++/13/format /usr/include/c++/13/charconv \
  /usr/include/c++/13/optional /usr/include/c++/13/span \
  /usr/include/c++/13/variant \
- /home/petr/N-Body/Terminal-N-Body-Sim/states/../input_controller.h \
- /home/petr/N-Body/Terminal-N-Body-Sim/states/../math_utils.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/states/../common/input_controller.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/states/../common/math_utils.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/states/../common/utils.h \
+ /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
+ /usr/include/c++/13/bits/deque.tcc \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/windows.h \
- /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/../math_utils.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/../common/math_utils.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/../simulation/bodies.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/button.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/consts.h \
- /usr/include/c++/13/map /usr/include/c++/13/bits/stl_tree.h \
- /usr/include/c++/13/bits/stl_map.h \
- /usr/include/c++/13/bits/stl_multimap.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/grid.h \
- /usr/include/c++/13/algorithm /usr/include/c++/13/bits/ranges_algo.h \
- /usr/include/c++/13/pstl/glue_algorithm_defs.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/utils.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../rendering/window_base.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/bodies.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/force_computers.h \
- /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/../math_utils.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/../common/math_utils.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/../simulation/bodies.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/utils.h \
- /usr/include/c++/13/queue /usr/include/c++/13/deque \
- /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
- /usr/include/c++/13/bits/stl_queue.h \
+ /usr/include/c++/13/queue /usr/include/c++/13/bits/stl_queue.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/simulation.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/bodies.h \
  /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/force_computers.h \
- /home/petr/N-Body/Terminal-N-Body-Sim/states/../utils.h \
+ /home/petr/N-Body/Terminal-N-Body-Sim/states/../simulation/utils.h \
  /usr/include/x86_64-linux-gnu/sys/ioctl.h \
  /usr/include/x86_64-linux-gnu/bits/ioctls.h \
  /usr/include/x86_64-linux-gnu/asm/ioctls.h \

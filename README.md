@@ -2,7 +2,7 @@
 
 N-Body physics simulation with rendering in the terminal.
 
-![demo](image/README/1781278856508.gif)
+![demo](image/README/two_galaxies.gif)
 
 ## Installation
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../math_utils.h"
+#include "../common/math_utils.h"
 #include "../simulation/bodies.h"
 #include "button.h"
 #include "consts.h"

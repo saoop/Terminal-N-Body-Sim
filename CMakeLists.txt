@@ -11,7 +11,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
 
 find_package(OpenMP REQUIRED)
 
-add_executable(sim main.cpp parser.cpp)
+add_executable(sim main.cpp)
 
 target_link_libraries(sim 
     OpenMP::OpenMP_CXX

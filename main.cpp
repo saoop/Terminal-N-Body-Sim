@@ -1,5 +1,5 @@
 #include "app.h"
-#include "parser.h"
+#include "parser/parser.h"
 #include "states/states.h"
 #include <cmath>
 #include <iostream>

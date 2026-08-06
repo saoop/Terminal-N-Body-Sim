@@ -7,13 +7,14 @@
 #include <vector>
 
 #include "../app.h"
-#include "../input_controller.h"
-#include "../math_utils.h"
+#include "../common/input_controller.h"
+#include "../common/math_utils.h"
+#include "../common/utils.h"
 #include "../rendering/windows.h"
 #include "../simulation/bodies.h"
 #include "../simulation/force_computers.h"
 #include "../simulation/simulation.h"
-#include "../utils.h"
+#include "../simulation/utils.h"
 #include "state_base.h"
 #include <cmath>
 #include <memory>

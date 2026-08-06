@@ -9,7 +9,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/petr/N-Body/Terminal-N-Body-Sim/main.cpp" "CMakeFiles/sim.dir/main.cpp.o" "gcc" "CMakeFiles/sim.dir/main.cpp.o.d"
-  "/home/petr/N-Body/Terminal-N-Body-Sim/parser.cpp" "CMakeFiles/sim.dir/parser.cpp.o" "gcc" "CMakeFiles/sim.dir/parser.cpp.o.d"
   "" "sim" "gcc" "CMakeFiles/sim.dir/link.d"
   )
 
