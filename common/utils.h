@@ -2,8 +2,20 @@
 #define UTILS_H
 #include <bits/chrono.h>
 #include <deque>
+#include <filesystem>
 #include <memory>
 #include <unistd.h>
+
+std::filesystem::path getScenarioPath(const std::string &filename) {
+  // look relative to executable location
+  auto exe_dir = std::filesystem::canonical("/proc/self/exe").parent_path();
+  return exe_dir / "scenarios" / filename;
+}
+std::filesystem::path getScenariosFolderPath() {
+  // look relative to executable location
+  auto exe_dir = std::filesystem::canonical("/proc/self/exe").parent_path();
+  return exe_dir / "scenarios";
+}
 
 class Timer {
 private:

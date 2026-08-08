@@ -201,6 +201,7 @@ CMakeFiles/sim.dir/main.cpp.o: /home/petr/N-Body/Terminal-N-Body-Sim/main.cpp \
   /usr/include/c++/13/codecvt \
   /usr/include/c++/13/compare \
   /usr/include/c++/13/concepts \
+  /usr/include/c++/13/csignal \
   /usr/include/c++/13/cstddef \
   /usr/include/c++/13/cstdint \
   /usr/include/c++/13/cstdio \
@@ -289,6 +290,7 @@ CMakeFiles/sim.dir/main.cpp.o: /home/petr/N-Body/Terminal-N-Body-Sim/main.cpp \
   /usr/include/math.h \
   /usr/include/pthread.h \
   /usr/include/sched.h \
+  /usr/include/signal.h \
   /usr/include/stdc-predef.h \
   /usr/include/stdint.h \
   /usr/include/stdio.h \
@@ -344,6 +346,19 @@ CMakeFiles/sim.dir/main.cpp.o: /home/petr/N-Body/Terminal-N-Body-Sim/main.cpp \
   /usr/include/x86_64-linux-gnu/bits/select.h \
   /usr/include/x86_64-linux-gnu/bits/select2.h \
   /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+  /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+  /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+  /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
+  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
+  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
+  /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+  /usr/include/x86_64-linux-gnu/bits/sigstksz.h \
+  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+  /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
@@ -382,17 +397,24 @@ CMakeFiles/sim.dir/main.cpp.o: /home/petr/N-Body/Terminal-N-Body-Sim/main.cpp \
   /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
@@ -435,6 +457,7 @@ CMakeFiles/sim.dir/main.cpp.o: /home/petr/N-Body/Terminal-N-Body-Sim/main.cpp \
   /usr/include/x86_64-linux-gnu/sys/syscall.h \
   /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
+  /usr/include/x86_64-linux-gnu/sys/ucontext.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/omp.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
@@ -461,7 +484,6 @@ sim: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
   /usr/lib/x86_64-linux-gnu/libpthread.a \
   CMakeFiles/sim.dir/main.cpp.o \
-  CMakeFiles/sim.dir/parser.cpp.o \
   _deps/yaml-cpp-build/libyaml-cpp.a
 
 
@@ -487,9 +509,9 @@ CMakeFiles/sim.dir/main.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
-
 /usr/lib/gcc/x86_64-linux-gnu/13/include/omp.h:
+
+/usr/include/x86_64-linux-gnu/sys/ucontext.h:
 
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
 
@@ -538,6 +560,10 @@ CMakeFiles/sim.dir/main.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
 /usr/include/x86_64-linux-gnu/bits/typesizes.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h:
 
@@ -601,6 +627,26 @@ CMakeFiles/sim.dir/main.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-least.h:
 
+/usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/ss_flags.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigthread.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigstksz.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigstack.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigevent-consts.h:
+
 /usr/include/x86_64-linux-gnu/bits/select-decl.h:
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
@@ -626,6 +672,8 @@ CMakeFiles/sim.dir/main.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
 /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/ioctls.h:
 
@@ -711,7 +759,13 @@ CMakeFiles/sim.dir/main.cpp.o:
 
 /usr/include/c++/13/type_traits:
 
+/usr/include/x86_64-linux-gnu/bits/sigcontext.h:
+
 /usr/include/c++/13/tr1/special_function_util.h:
+
+/usr/include/x86_64-linux-gnu/asm/unistd.h:
+
+/usr/include/c++/13/tr1/riemann_zeta.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
@@ -732,6 +786,8 @@ CMakeFiles/sim.dir/main.cpp.o:
 /usr/include/c++/13/bits/move.h:
 
 /usr/include/c++/13/bits/memoryfwd.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigaction.h:
 
 /usr/include/c++/13/bits/fs_fwd.h:
 
@@ -773,6 +829,8 @@ CMakeFiles/sim.dir/main.cpp.o:
 
 /home/petr/N-Body/Terminal-N-Body-Sim/rendering/consts.h:
 
+/usr/include/x86_64-linux-gnu/bits/signum-arch.h:
+
 /usr/include/x86_64-linux-gnu/bits/errno.h:
 
 /usr/include/c++/13/bits/stl_pair.h:
@@ -798,6 +856,8 @@ CMakeFiles/sim.dir/main.cpp.o:
 /usr/include/c++/13/sstream:
 
 /usr/include/c++/13/bits/exception_ptr.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
@@ -862,6 +922,8 @@ CMakeFiles/sim.dir/main.cpp.o:
 /usr/lib/x86_64-linux-gnu/libm.so:
 
 /usr/include/c++/13/bits/ranges_cmp.h:
+
+/usr/include/x86_64-linux-gnu/bits/signum-generic.h:
 
 /usr/include/c++/13/iosfwd:
 
@@ -940,6 +1002,8 @@ _deps/yaml-cpp-src/include/yaml-cpp/node/impl.h:
 /usr/include/c++/13/tr1/poly_laguerre.tcc:
 
 _deps/yaml-cpp-src/include/yaml-cpp/binary.h:
+
+/usr/include/c++/13/csignal:
 
 /home/petr/N-Body/Terminal-N-Body-Sim/states/state_base.h:
 
@@ -1028,6 +1092,8 @@ _deps/yaml-cpp-src/include/yaml-cpp/fptostring.h:
 /usr/include/c++/13/bits/uses_allocator.h:
 
 /usr/include/strings.h:
+
+/usr/include/signal.h:
 
 /usr/include/c++/13/iomanip:
 
@@ -1141,6 +1207,8 @@ _deps/yaml-cpp-src/include/yaml-cpp/traits.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
 
+/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
+
 /usr/include/c++/13/bits/char_traits.h:
 
 /usr/include/c++/13/bits/std_function.h:
@@ -1148,8 +1216,6 @@ _deps/yaml-cpp-src/include/yaml-cpp/traits.h:
 /usr/include/c++/13/cstdint:
 
 /usr/include/c++/13/cstdlib:
-
-CMakeFiles/sim.dir/parser.cpp.o:
 
 /usr/include/c++/13/bits/std_mutex.h:
 
@@ -1183,6 +1249,8 @@ _deps/yaml-cpp-src/include/yaml-cpp/exceptions.h:
 
 /lib/x86_64-linux-gnu/libc.so.6:
 
+/usr/include/x86_64-linux-gnu/bits/types/sigval_t.h:
+
 /usr/include/c++/13/bits/stl_map.h:
 
 /usr/include/c++/13/bits/new_allocator.h:
@@ -1209,10 +1277,6 @@ _deps/yaml-cpp-src/include/yaml-cpp/exceptions.h:
 
 /usr/include/c++/13/ostream:
 
-/usr/include/x86_64-linux-gnu/asm/unistd.h:
-
-/usr/include/c++/13/tr1/riemann_zeta.tcc:
-
 /usr/include/c++/13/bits/iterator_concepts.h:
 
 /usr/include/c++/13/bits/stringfwd.h:
@@ -1222,6 +1286,8 @@ _deps/yaml-cpp-src/include/yaml-cpp/exceptions.h:
 /usr/include/c++/13/bits/uniform_int_dist.h:
 
 /usr/include/c++/13/bits/valarray_before.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h:
 
 /usr/include/x86_64-linux-gnu/asm/ioctl.h:
 

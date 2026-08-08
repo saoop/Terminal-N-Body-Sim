@@ -17,6 +17,10 @@ target_link_libraries(sim
     OpenMP::OpenMP_CXX
 )
 
+# copies scenarios folder to build directory
+file(COPY ${CMAKE_SOURCE_DIR}/scenarios 
+     DESTINATION ${CMAKE_BINARY_DIR})
+
 target_include_directories(sim PRIVATE
     ${CMAKE_SOURCE_DIR}
 )

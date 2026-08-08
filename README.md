@@ -10,10 +10,13 @@ N-Body physics simulation with rendering in the terminal.
 
 ## Run an Example
 
-```bash
-./build/sim
 ```
+chmod +x run.sh
+./run.sh
+```
+
 ### Controls
+
 `Arrows` - pan the camera
 
 `Space-bar` - pause/resume simulation
@@ -22,12 +25,11 @@ N-Body physics simulation with rendering in the terminal.
 
 `Ctr` + `-` - zoom out
 
-
 ## Building
 
-```bash
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j$(nproc)
+```
+chmod +x build.sh
+./build.sh
 ```
 
 ## Creating Your Own Scenarios

@@ -1,9 +1,8 @@
 #pragma once
-#include "common/input_controller.h"
 #include "states/state_base.h"
 #include <memory>
+
 class App {
-  RawMode raw_mode; // RAII for raw mode
 
   std::unique_ptr<State> m_current_state;
 

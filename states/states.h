@@ -129,16 +129,15 @@ private:
     int i{2};
     std::cout << "object at: " << this << "\n"; // when creating button
 
-    for (auto &entry : std::filesystem::directory_iterator("../scenarios/")) {
-      auto path = std::filesystem::absolute(entry.path()).string();
+    for (auto &entry : std::filesystem::directory_iterator(
+             getScenariosFolderPath().string())) {
       auto filename = entry.path().filename().string();
       startingWindow->addButton(std::make_unique<Button>(
           1, i++, w.ws_col - 3, 1, std::format("  {}", filename),
-          [this, path, filename]() {
+          [this, filename]() {
             std::cout << "this in lambda: " << this
                       << "\n"; // when button pressed
-            // parseYAML(std::filesystem::absolute(path).string());
-            m_chosen_file = path;
+            m_chosen_file = getScenarioPath(filename).string();
 
             closeDisplayFiles();
           },
@@ -148,6 +147,8 @@ private:
 
 public:
   MenuState(App &app) : m_app{app} {
+
+    m_chosen_file = getScenarioPath("two_galaxies.yaml").string();
     // struct winsize w;
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
