@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -march=native -Wl,--dependency-file=CMakeFiles/sim.dir/link.d CMakeFiles/sim.dir/main.cpp.o -o sim  _deps/yaml-cpp-build/libyaml-cpp.a /usr/lib/gcc/x86_64-linux-gnu/13/libgomp.so /usr/lib/x86_64-linux-gnu/libpthread.a
