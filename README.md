@@ -21,9 +21,9 @@ chmod +x run.sh
 
 `Space-bar` - pause/resume simulation
 
-`Ctr` + `+` - zoom in
+`+` - zoom in
 
-`Ctr` + `-` - zoom out
+`-` - zoom out
 
 ## Building
 
