@@ -36,8 +36,6 @@ public:
 class MetricsWindow : public Window {
   int max_energy_steps;
   int grpah_height = 10;
-  // double current_max = 0;
-  // double cuurent_min = 0;
   std::deque<double> energies;
 
 public:
@@ -64,8 +62,8 @@ public:
 
     // Line [2 - 11] - Graph for energy
     energies.push_back(total_energy);
-    if (this->energies.size() > this->max_energy_steps) {
-      this->energies.pop_front();
+    if (energies.size() > max_energy_steps) {
+      energies.pop_front();
     }
 
     double min = DBL_MAX;
@@ -78,16 +76,16 @@ public:
     }
 
     // diffs to max normalized
-    std::deque<int> diffs;
+    std::vector<int> heights;
     for (auto e : energies) {
-      diffs.push_back(
-          static_cast<int>(std::ceil(grpah_height * (max - e) / (max - min))));
+      heights.push_back(static_cast<int>(
+          std::ceil((grpah_height - 1) * (e - min) / (max - min))));
     }
 
-    for (int x = 0; x < diffs.size(); x++) {
-      for (int y = 1; y <= grpah_height; y++) {
+    for (int x = 0; x < heights.size(); x++) {
+      for (int y = 0; y < grpah_height; y++) {
         moveCursor(1 + x, 3 + grpah_height - y);
-        std::cout << ((y <= diffs[x]) ? "█" : " ");
+        std::cout << ((y <= heights[x]) ? "█" : " ");
       }
     }
     stopRendering();
