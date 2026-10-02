@@ -95,7 +95,7 @@ public:
 
     resourcesWindow->render(fpsController->getCurrentFPS());
     renderer->render(sim->getBodies());
-    sideInfo->render(sim->getBodies().size(), 11);
+    sideInfo->render(sim->getBodies().size(), sim->getTotalEnergy());
 
     sim->step();
 

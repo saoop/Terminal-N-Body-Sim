@@ -66,6 +66,10 @@ Key readKey() {
     return Key::ENTER;
   }
 
+  // Arrow keys arrive as a 3-byte escape sequence: ESC '[' 'A'..'D'.
+  if (n < 3 || buf[0] != '\033' || buf[1] != '[')
+    return Key::OTHER;
+
   switch (buf[2]) {
   case 'A':
     return Key::UP;
@@ -91,7 +95,7 @@ public:
 public:
   void handleKeyPress() {
     Key key = readKey();
-    if (key != Key::NONE && key != Key::OTHER) {
+    if (key != Key::NONE && key != Key::OTHER && callbacks.contains(key)) {
       callbacks.at(key)();
     }
   }

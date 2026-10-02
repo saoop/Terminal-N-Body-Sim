@@ -13,7 +13,7 @@ private:
   std::unique_ptr<ForcesComputer<T>> m_forcesComputer;
 
   std::vector<CircleBody<T>> m_bodies;
-
+  T m_current_energy;
   bool m_paused{false};
 
 public:
@@ -22,7 +22,7 @@ public:
     if (dt < 0) {
       throw std::runtime_error("dt cannot be less than 0!");
     }
-
+    m_current_energy = 0;
     m_dt = dt;
   }
 
@@ -36,8 +36,22 @@ public:
 
     // Compute the force array.
     std::vector<Vec2<T>> forces(m_bodies.size());
-    m_forcesComputer->computeForces(forces, m_bodies);
+    std::vector<T> energies(m_bodies.size());
+    m_forcesComputer->computeForces(forces, energies, m_bodies);
 
+    // Energy calculataion
+
+    T total_energy = 0;
+
+#pragma omp parallel for reduction(+ : total_energy)
+    for (int i = 0; i < m_bodies.size(); i++) {
+
+      T kinetic_energy = 0.5 * (m_bodies[i].getMass() *
+                                (std::pow(m_bodies[i].getVelScalar(), 2)));
+      total_energy += (kinetic_energy + energies[i]);
+    }
+
+    m_current_energy = total_energy;
     // Apply forces to compute new accelerations for each body
     std::vector<Vec2<T>> accelerations(m_bodies.size());
 
@@ -55,7 +69,7 @@ public:
   }
 
   std::vector<CircleBody<T>> &getBodies() { return m_bodies; }
-
+  T getTotalEnergy() { return m_current_energy; }
   void addBody(CircleBody<T> body) { m_bodies.push_back(body); }
 };
 

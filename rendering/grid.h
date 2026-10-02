@@ -10,7 +10,7 @@ struct Grid {
   /*
   Character Grid. This is a class between simulation and rendering, that makes
   rendering easier.
-
+█
   Current version uses a pair of 2 ints in the grid: number of bodies that
   should be displayed in one character and intensity of the pixel. If there are
   multiple bodies that fit into one character we can display them with something

@@ -8,6 +8,23 @@ N-Body physics simulation with rendering in the terminal.
 
 > **Important:** unfortunately this program can only be run on Linux. If you use Windows, you can run it inside [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 
+### Requirements
+
+1. OpenMP
+
+## Building
+
+```
+chmod +x build.sh
+./build.sh
+```
+
+For a debug build add -d flag:
+
+```
+./build.sh -d
+```
+
 ## Run an Example
 
 ```
@@ -15,7 +32,7 @@ chmod +x run.sh
 ./run.sh
 ```
 
-### Controls
+## Controls
 
 `Arrows` - pan the camera
 
@@ -24,13 +41,6 @@ chmod +x run.sh
 `+` - zoom in
 
 `-` - zoom out
-
-## Building
-
-```
-chmod +x build.sh
-./build.sh
-```
 
 ## Creating Your Own Scenarios
 

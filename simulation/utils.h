@@ -106,39 +106,43 @@ template <typename T> struct QuadTree {
     }
   }
 
-  Vec2<T> traverse(Vec2<T> check_pos,
-                   double theta) { // basically calculates the field.
+  std::pair<T, Vec2<T>>
+  traverse(Vec2<T> check_pos,
+           double theta) { // basically calculates the field.
     // First check if it's the same body
     Vec2<T> direction{center_of_mass - check_pos};
     T dist{direction.norm()};
 
-    if (dist < 100) { // hardcoded for now. take radius in
-      return {0, 0};
-    }
     if (type == Empty) {
-      return {0, 0};
+      return {0, {0, 0}};
     }
 
     T d3 = dist * dist * dist;
 
     if (type == Leaf) {
-      return direction * total_mass / d3;
+      if (dist < 100) { // hardcoded for now. take radius in
+        return {0, {0, 0}};
+      }
+      return {total_mass / dist, direction * total_mass / d3};
     }
 
     if (width / dist < theta)
-      return direction * total_mass / d3;
+      return {total_mass / dist, direction * total_mass / d3};
 
     Vec2<T> field{0, 0};
+    T energy = 0;
     for (auto &child : children) {
-      field += child->traverse(check_pos, theta);
+      auto [e, f] = child->traverse(check_pos, theta);
+      energy += e;
+      field += f;
     }
-    return field;
+    return {energy, field};
   }
 };
 
 //---------------------------------------------------------------------------------------------
 // Another implementation of QuadTree that uses arrays, may be useful in the
-// future to improve performance
+// future to improve performance because of cache friendliness
 //---------------------------------------------------------------------------------------------
 
 // template <typename T> struct QuadNode {
