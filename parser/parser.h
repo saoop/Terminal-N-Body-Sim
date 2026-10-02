@@ -37,7 +37,7 @@ SimulationParams<double> loadTwoGalaxies() {
   constexpr double G = 100;
 
   SimulationParams<double> simulationParams{.name = "Two Galaxies"};
-  simulationParams.dt = 1;
+  simulationParams.dt = 4;
   simulationParams.G = 100;
   simulationParams.forceCalcType = ForceCalcType::BarnesHut;
 

@@ -8,6 +8,7 @@
 #include "grid.h"
 #include "utils.h"
 #include "window_base.h"
+#include <float.h>
 #include <format>
 #include <iostream>
 #include <map>
@@ -33,11 +34,21 @@ public:
 };
 
 class MetricsWindow : public Window {
+  int max_energy_steps;
+  int grpah_height = 10;
+  // double current_max = 0;
+  // double cuurent_min = 0;
+  std::deque<double> energies;
+
 public:
   MetricsWindow(int pos_x, int pos_y, int width, int height)
-      : Window{pos_x, pos_y, width, height} {}
+      : Window{pos_x, pos_y, width, height} {
+    max_energy_steps = width;
+  }
 
-  void render(size_t num_bodies, double total_energy) const {
+  // void update(size_t num_bodies, double total_energy)
+
+  void render(size_t num_bodies, double total_energy) {
     // Line 0 — body count
     startRendering();
     drawFullBorder();
@@ -50,6 +61,35 @@ public:
 
     std::string energy_string = "Energy: " + std::to_string(total_energy);
     printTruncated(energy_string, m_width);
+
+    // Line [2 - 11] - Graph for energy
+    energies.push_back(total_energy);
+    if (this->energies.size() > this->max_energy_steps) {
+      this->energies.pop_front();
+    }
+
+    double min = DBL_MAX;
+    double max = -DBL_MAX;
+    for (auto e : energies) {
+      if (e > max)
+        max = e;
+      if (e < min)
+        min = e;
+    }
+
+    // diffs to max normalized
+    std::deque<int> diffs;
+    for (auto e : energies) {
+      diffs.push_back(
+          static_cast<int>(std::ceil(grpah_height * (max - e) / (max - min))));
+    }
+
+    for (int x = 0; x < diffs.size(); x++) {
+      for (int y = 1; y <= grpah_height; y++) {
+        moveCursor(1 + x, 3 + grpah_height - y);
+        std::cout << ((y <= diffs[x]) ? "█" : " ");
+      }
+    }
     stopRendering();
   }
 };
