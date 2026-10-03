@@ -8,6 +8,7 @@
 #include "grid.h"
 #include "utils.h"
 #include "window_base.h"
+#include <cmath>
 #include <float.h>
 #include <format>
 #include <iostream>
@@ -57,7 +58,8 @@ public:
     // Line 1 — energy
     moveCursor(1, 2);
 
-    std::string energy_string = "Energy: " + std::to_string(total_energy);
+    std::string energy_string =
+        "Current total energy: " + std::to_string(total_energy);
     printTruncated(energy_string, m_width);
 
     // Line [2 - 11] - Graph for energy
@@ -84,10 +86,16 @@ public:
 
     for (int x = 0; x < heights.size(); x++) {
       for (int y = 0; y < grpah_height; y++) {
-        moveCursor(1 + x, 3 + grpah_height - y);
+        moveCursor(1 + x, 4 + grpah_height - y);
         std::cout << ((y <= heights[x]) ? "█" : " ");
       }
     }
+
+    moveCursor(1, 4);
+    printTruncated(std::to_string(max) + " J", 20);
+    moveCursor(1, 5 + grpah_height);
+    printTruncated(std::to_string(min) + " J", 20);
+
     stopRendering();
   }
 };
