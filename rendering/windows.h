@@ -13,6 +13,7 @@
 #include <format>
 #include <iostream>
 #include <map>
+#include <numeric>
 #include <string>
 #include <unistd.h>
 #include <vector>
@@ -36,16 +37,58 @@ public:
 
 class MetricsWindow : public Window {
   int max_energy_steps;
-  int grpah_height = 10;
+  int max_accumulation_steps;
+  int graph_height = 10;
   std::deque<double> energies;
+  std::deque<double> last_avgs;
+  std::vector<double> acc_energies; // 40 -> flush average into moving avg
 
 public:
   MetricsWindow(int pos_x, int pos_y, int width, int height)
       : Window{pos_x, pos_y, width, height} {
     max_energy_steps = width;
+    max_accumulation_steps = width / 2;
   }
 
   // void update(size_t num_bodies, double total_energy)
+
+  void printGraph(std::deque<double> &values, int from, int height) {
+    if (values.size() == 0) {
+      return;
+    }
+    double min = DBL_MAX;
+    double max = -DBL_MAX;
+    for (auto e : values) {
+      if (e > max)
+        max = e;
+      if (e < min)
+        min = e;
+    }
+
+    // diffs to max normalized
+    // If all values are equal, range is 0 -> 0/0 = NaN, so draw a flat line
+    // in the middle instead.
+    double range = max - min;
+    std::vector<int> heights;
+    for (auto e : values) {
+      heights.push_back(
+          range > 0
+              ? static_cast<int>(std::ceil((height - 1) * (e - min) / range))
+              : height / 2);
+    }
+
+    for (int x = 0; x < heights.size(); x++) {
+      for (int y = 0; y < height; y++) {
+        moveCursor(1 + x, from + height - y);
+        std::cout << ((y <= heights[x]) ? "█" : " ");
+      }
+    }
+
+    moveCursor(1, from);
+    printTruncated(std::to_string(max) + " J", 20);
+    moveCursor(1, from + 1 + height);
+    printTruncated(std::to_string(min) + " J", 20);
+  }
 
   void render(size_t num_bodies, double total_energy) {
     // Line 0 — body count
@@ -68,33 +111,27 @@ public:
       energies.pop_front();
     }
 
-    double min = DBL_MAX;
-    double max = -DBL_MAX;
-    for (auto e : energies) {
-      if (e > max)
-        max = e;
-      if (e < min)
-        min = e;
-    }
-
-    // diffs to max normalized
-    std::vector<int> heights;
-    for (auto e : energies) {
-      heights.push_back(static_cast<int>(
-          std::ceil((grpah_height - 1) * (e - min) / (max - min))));
-    }
-
-    for (int x = 0; x < heights.size(); x++) {
-      for (int y = 0; y < grpah_height; y++) {
-        moveCursor(1 + x, 4 + grpah_height - y);
-        std::cout << ((y <= heights[x]) ? "█" : " ");
+    acc_energies.push_back(total_energy);
+    if (acc_energies.size() > max_accumulation_steps) {
+      // flush the average into the moving avg:
+      double sum =
+          std::accumulate(acc_energies.begin(), acc_energies.end(), 0.0);
+      last_avgs.push_back(sum / acc_energies.size());
+      acc_energies.clear();
+      if (last_avgs.size() > max_energy_steps) {
+        last_avgs.pop_front();
       }
     }
 
     moveCursor(1, 4);
-    printTruncated(std::to_string(max) + " J", 20);
-    moveCursor(1, 5 + grpah_height);
-    printTruncated(std::to_string(min) + " J", 20);
+    printTruncated("Energy evolution:", max_energy_steps);
+    printGraph(energies, 5, graph_height);
+
+    moveCursor(1, 6 + graph_height + 2);
+    printTruncated("Averages of energy evolution in 20 steps:",
+                   max_energy_steps);
+
+    printGraph(last_avgs, 9 + graph_height, graph_height);
 
     stopRendering();
   }

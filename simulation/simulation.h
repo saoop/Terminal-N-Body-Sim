@@ -14,7 +14,23 @@ private:
 
   std::vector<CircleBody<T>> m_bodies;
   T m_current_energy;
+  bool m_energy_valid{false}; // false until energy was computed for the
+                              // current bodies
   bool m_paused{false};
+
+  // Total energy: kinetic + potential (energies = per-body potential)
+  T sumEnergy(std::vector<T> const &energies) {
+    T total_energy = 0;
+
+#pragma omp parallel for reduction(+ : total_energy)
+    for (int i = 0; i < m_bodies.size(); i++) {
+
+      T kinetic_energy = 0.5 * (m_bodies[i].getMass() *
+                                (std::pow(m_bodies[i].getVelScalar(), 2)));
+      total_energy += (kinetic_energy + energies[i]);
+    }
+    return total_energy;
+  }
 
 public:
   Simulation(std::unique_ptr<ForcesComputer<T>> forcesComputer, double dt = 1)
@@ -40,18 +56,8 @@ public:
     m_forcesComputer->computeForces(forces, energies, m_bodies);
 
     // Energy calculataion
-
-    T total_energy = 0;
-
-#pragma omp parallel for reduction(+ : total_energy)
-    for (int i = 0; i < m_bodies.size(); i++) {
-
-      T kinetic_energy = 0.5 * (m_bodies[i].getMass() *
-                                (std::pow(m_bodies[i].getVelScalar(), 2)));
-      total_energy += (kinetic_energy + energies[i]);
-    }
-
-    m_current_energy = total_energy;
+    m_current_energy = sumEnergy(energies);
+    m_energy_valid = true;
     // Apply forces to compute new accelerations for each body
     std::vector<Vec2<T>> accelerations(m_bodies.size());
 
@@ -69,8 +75,23 @@ public:
   }
 
   std::vector<CircleBody<T>> &getBodies() { return m_bodies; }
-  T getTotalEnergy() { return m_current_energy; }
-  void addBody(CircleBody<T> body) { m_bodies.push_back(body); }
+  T getTotalEnergy() {
+    // Before the first step there is no energy yet, compute it once here
+    // (otherwise the first frame would show 0).
+    if (!m_energy_valid) {
+      std::vector<Vec2<T>> forces(m_bodies.size());
+      std::vector<T> energies(m_bodies.size());
+      m_forcesComputer->computeForces(forces, energies, m_bodies);
+      m_current_energy = sumEnergy(energies);
+      m_energy_valid = true;
+    }
+    return m_current_energy;
+  }
+
+  void addBody(CircleBody<T> body) {
+    m_bodies.push_back(body);
+    m_energy_valid = false;
+  }
 };
 
 #endif // SIMULATION_H

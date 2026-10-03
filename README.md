@@ -67,5 +67,5 @@ bodies:
 
 ## TODOs
 
-- [ ] Add energy level visualization to the right window
+- [X] Add energy level visualization to the right window
 - [ ] Add collisions and merging of bodies into one
