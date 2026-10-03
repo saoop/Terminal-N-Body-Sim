@@ -4,6 +4,10 @@ N-Body physics simulation with rendering in the terminal.
 
 ![demo](image/README/two_galaxies.gif)
 
+### Example run
+
+![1791038420048](image/README/1791038420048.gif)
+
 ## Installation
 
 > **Important:** unfortunately this program can only be run on Linux. If you use Windows, you can run it inside [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
